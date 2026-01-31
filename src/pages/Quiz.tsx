@@ -202,7 +202,7 @@ export default function Quiz() {
         setPendingCarrotReward(earned, balloonId);
       }
       setTimeout(() => {
-        navigate("/");
+        navigate("/", { state: { justCompleted: balloonId } });
       }, 2000); // Navigate back after 2 seconds
     } else {
       // Hide animation and clear selection after 2 seconds

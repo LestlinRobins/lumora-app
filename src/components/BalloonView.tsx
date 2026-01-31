@@ -1,7 +1,9 @@
 
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Shield, Users, Heart, BookOpen, Star, Brain, Lock, Play } from "lucide-react";
+
+// ... (interfaces and Balloon component remain same)
 
 interface LessonBalloon {
   id: number;
@@ -20,6 +22,7 @@ interface BalloonProps extends LessonBalloon {
   onClick?: () => void;
   className?: string;
   isNextBalloon?: boolean;
+  shouldExplode?: boolean;
 }
 
 function Balloon({ 
@@ -34,9 +37,18 @@ function Balloon({
   leftPosition,
   onClick,
   className,
-  isNextBalloon
+  isNextBalloon,
+  shouldExplode
 }: BalloonProps) {
   const [isPressed, setIsPressed] = useState(false);
+  const [hasExploded, setHasExploded] = useState(false);
+
+  // If currently exploding, we show the "Inflated" look but animating
+  // If completed and (not exploding or already exploded), we show "Deflated"
+  // If not completed, show "Inflated"
+
+  const isExploding = shouldExplode && !hasExploded;
+  const showDeflated = isCompleted && (!shouldExplode || hasExploded);
 
   return (
     <div 
@@ -49,7 +61,7 @@ function Balloon({
       }}
     >
       {/* Purple halo for next balloon */}
-      {isNextBalloon && (
+      {isNextBalloon && !isCompleted && (
         <div 
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0"
           style={{
@@ -95,24 +107,29 @@ function Balloon({
         className={`
           relative transition-all duration-500 group flex flex-col items-center
           ${isUnlocked && !isCompleted ? 'cursor-pointer' : 'cursor-not-allowed'}
-          ${isCompleted ? 'opacity-70' : !isUnlocked ? 'opacity-60' : ''}
+          ${showDeflated ? 'opacity-70' : !isUnlocked ? 'opacity-60' : ''}
         `}
       >
-        <div className={`relative transition-transform duration-500 ${isCompleted ? 'scale-75' : ''}`}>
+        <div 
+           className={`relative transition-transform duration-500 ${showDeflated ? 'scale-75' : ''} ${isExploding ? 'animate-balloon-pop' : ''}`}
+           onAnimationEnd={() => {
+             if (isExploding) setHasExploded(true);
+           }}
+        >
           {/* Main Balloon Body (Oval) - Deflated when completed */}
           <div 
             className={`
               flex items-center justify-center relative z-20
               transition-all duration-500
-              ${isCompleted ? 'bg-gray-400' : isUnlocked ? color : 'bg-muted'}
+              ${showDeflated ? 'bg-gray-400' : isUnlocked ? color : 'bg-muted'}
             `}
             style={{
-              width: isCompleted ? '4.5rem' : '5.5rem',
-              height: isCompleted ? '5rem' : '6.5rem',
-              borderRadius: isCompleted 
+              width: showDeflated ? '4.5rem' : '5.5rem',
+              height: showDeflated ? '5rem' : '6.5rem',
+              borderRadius: showDeflated 
                 ? '45% 45% 50% 50% / 40% 40% 60% 60%' // More deflated shape
                 : '50% 50% 50% 50% / 45% 45% 55% 55%', // Normal balloon shape
-              boxShadow: isCompleted
+              boxShadow: showDeflated
                 ? '0 3px 0 0 hsl(0, 0%, 50%)'
                 : isPressed && isUnlocked
                   ? `0 2px 0 0 ${shadowColor}`
@@ -124,7 +141,7 @@ function Balloon({
           >
             {/* Icon - Star for completed, normal icon otherwise */}
             <div className="pb-2">
-              {isCompleted ? (
+              {showDeflated ? (
                 <Star 
                   className="w-8 h-8 text-yellow-400 fill-yellow-400 animate-bounce-star"
                   strokeWidth={2} 
@@ -142,12 +159,12 @@ function Balloon({
             {/* Shine effect - dimmer when completed */}
             {isUnlocked && (
               <div 
-                className={`absolute top-3 left-4 w-6 h-10 rounded-full -rotate-12 blur-[1px] transition-opacity duration-500 ${isCompleted ? 'bg-white/10' : 'bg-white/20'}`}
+                className={`absolute top-3 left-4 w-6 h-10 rounded-full -rotate-12 blur-[1px] transition-opacity duration-500 ${showDeflated ? 'bg-white/10' : 'bg-white/20'}`}
               />
             )}
             
             {/* Wrinkle lines for deflated balloon */}
-            {isCompleted && (
+            {showDeflated && (
               <>
                 <div className="absolute top-6 left-3 w-3 h-[1px] bg-gray-500/30 rotate-[-20deg]" />
                 <div className="absolute top-10 right-4 w-4 h-[1px] bg-gray-500/30 rotate-[15deg]" />
@@ -165,11 +182,11 @@ function Balloon({
             }}
           >
              {/* The Knot */}
-             <div className={`w-2 h-2 ${isCompleted ? 'bg-gray-400' : isUnlocked ? color : 'bg-muted'} rounded-full`} />
+             <div className={`w-2 h-2 ${showDeflated ? 'bg-gray-400' : isUnlocked ? color : 'bg-muted'} rounded-full`} />
              {/* The Bow Loops */}
              <div className="relative -mt-1.5 flex">
-                <div className={`w-3 h-3 ${isCompleted ? 'bg-gray-400' : isUnlocked ? color : 'bg-muted'} rounded-full rounded-br-none -rotate-45 -mr-1`} />
-                <div className={`w-3 h-3 ${isCompleted ? 'bg-gray-400' : isUnlocked ? color : 'bg-muted'} rounded-full rounded-bl-none rotate-45 -ml-1`} />
+                <div className={`w-3 h-3 ${showDeflated ? 'bg-gray-400' : isUnlocked ? color : 'bg-muted'} rounded-full rounded-br-none -rotate-45 -mr-1`} />
+                <div className={`w-3 h-3 ${showDeflated ? 'bg-gray-400' : isUnlocked ? color : 'bg-muted'} rounded-full rounded-bl-none rotate-45 -ml-1`} />
              </div>
           </div>
 
@@ -186,12 +203,28 @@ function Balloon({
 
         {/* Label below */}
         <div className="text-center mt-4 max-w-[100px] z-30 relative">
-          <p className={`text-xs font-bold ${isCompleted ? 'text-gray-500' : isUnlocked ? 'text-foreground' : 'text-muted-foreground'}`}>
+          <p className={`text-xs font-bold ${showDeflated ? 'text-gray-500' : isUnlocked ? 'text-foreground' : 'text-muted-foreground'}`}>
             {title}
           </p>
         </div>
       </button>
       
+      {/* Exploding Shards - Only visible during explosion */}
+      {isExploding && (
+        <>
+          {[...Array(8)].map((_, i) => (
+             <div 
+               key={i}
+               className={`absolute top-1/2 left-1/2 w-3 h-3 ${color} rounded-sm`}
+               style={{
+                 animation: `shard-fly-${i} 0.4s ease-out forwards`,
+                 zIndex: 30
+               }}
+             />
+          ))}
+        </>
+      )}
+
       {/* CSS Animation Keyframes */}
       <style>{`
         @keyframes pulse-halo {
@@ -215,6 +248,24 @@ function Balloon({
         .animate-bounce-star {
           animation: bounce-star 1.5s ease-in-out infinite;
         }
+        @keyframes balloon-pop {
+           0% { transform: scale(1); opacity: 1; }
+           50% { transform: scale(1.2); opacity: 1; }
+           100% { transform: scale(1.4); opacity: 0; }
+        }
+        .animate-balloon-pop {
+           animation: balloon-pop 0.3s ease-out forwards;
+        }
+
+        /* Shard Animations */
+        @keyframes shard-fly-0 { 0% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0; transform: translate(-150%, -150%) scale(0.5); } }
+        @keyframes shard-fly-1 { 0% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0; transform: translate(50%, -150%) scale(0.5); } }
+        @keyframes shard-fly-2 { 0% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0; transform: translate(150%, -50%) scale(0.5); } }
+        @keyframes shard-fly-3 { 0% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0; transform: translate(50%, 50%) scale(0.5); } }
+        @keyframes shard-fly-4 { 0% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0; transform: translate(-50%, 150%) scale(0.5); } }
+        @keyframes shard-fly-5 { 0% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0; transform: translate(-150%, 50%) scale(0.5); } }
+        @keyframes shard-fly-6 { 0% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0; transform: translate(-120%, -100%) rotate(45deg) scale(0.5); } }
+        @keyframes shard-fly-7 { 0% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0; transform: translate(120%, -20%) rotate(-45deg) scale(0.5); } }
       `}</style>
     </div>
   );
@@ -222,8 +273,10 @@ function Balloon({
 
 export function BalloonView() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [scrollY, setScrollY] = useState(0);
   const [completedBalloons, setCompletedBalloons] = useState<number[]>([]);
+  const [justPoppedId, setJustPoppedId] = useState<number | null>(null);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -235,7 +288,14 @@ export function BalloonView() {
     // Load completed balloons from localStorage
     const completed = JSON.parse(localStorage.getItem("completedBalloons") || "[]");
     setCompletedBalloons(completed);
-  }, []);
+
+    // Check if we just completed a balloon
+    if (location.state?.justCompleted) {
+        setJustPoppedId(location.state.justCompleted);
+        // Clear the state so it doesn't pop again on refresh/nav
+        navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location, navigate]);
 
   const handleBalloonClick = (balloon: LessonBalloon) => {
     if (balloon.isUnlocked && !balloon.isCompleted) {
@@ -465,6 +525,7 @@ export function BalloonView() {
           isCompleted={completedBalloons.includes(balloon.id)}
           onClick={() => handleBalloonClick(balloon)}
           isNextBalloon={balloon.id === nextBalloonId}
+          shouldExplode={balloon.id === justPoppedId}
           className="z-10"
         />
       ))}
