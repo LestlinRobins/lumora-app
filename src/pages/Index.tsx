@@ -5,6 +5,7 @@ import { BottomNav, TabId } from "@/components/BottomNav";
 import { ActionCardList } from "@/components/ActionCards";
 import { BalloonView } from "@/components/BalloonView";
 import { RewardBadge } from "@/components/DailyChallenge";
+import { SafeTipsContent } from "@/components/SafeTipsContent";
 import { MessageCircle } from "lucide-react";
 
 function NestContent() {
@@ -38,23 +39,6 @@ function ChatbotContent() {
   );
 }
 
-function SafeTipsContent() {
-  return (
-    <main className="pb-28 pt-20">
-      <Header />
-      
-      {/* Safe tips roadmap (copy of main roadmap) */}
-      <div className="mt-6">
-        <ActionCardList />
-      </div>
-      
-      {/* Reward encouragement */}
-      <RewardBadge />
-    </main>
-  );
-}
-
-
 export default function Index() {
   const [activeTab, setActiveTab] = useState<TabId>("nest");
   const navigate = useNavigate();
@@ -72,6 +56,8 @@ export default function Index() {
   const handleTabChange = (tab: TabId) => {
     if (tab === "profile") {
       navigate("/profile");
+    } else if (tab === "chatbot") {
+      navigate("/chat");
     } else {
       setActiveTab(tab);
     }
