@@ -120,7 +120,7 @@ export default function Onboarding() {
         animate={{ opacity: 1, y: 0 }}
         className="w-full flex justify-center mb-8"
       >
-          <img src="/illustrations/name.svg" alt="Name" className="w-48 opacity-80" />
+          <img src="/illustrations/nest2.png" alt="Name" className="w-32 opacity-100" />
       </motion.div>
 
       <motion.h1
@@ -129,7 +129,7 @@ export default function Onboarding() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
       >
-        Welcome to Lumora!
+        Welcome to Nest!
       </motion.h1>
       
       <motion.p
@@ -138,7 +138,7 @@ export default function Onboarding() {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
       >
-        Let's get you set up. What should we call you?
+        Let’s get you ready! What should we call you?
       </motion.p>
 
       <motion.div
