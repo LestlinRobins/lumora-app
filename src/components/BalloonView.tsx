@@ -1,4 +1,5 @@
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 import { Shield, Users, Heart, BookOpen, Star, Brain, Lock, CheckCircle2, Play } from "lucide-react";
 
 interface LessonBalloon {
@@ -16,6 +17,7 @@ interface LessonBalloon {
 
 interface BalloonProps extends LessonBalloon {
   onClick?: () => void;
+  className?: string;
 }
 
 function Balloon({ 
@@ -27,32 +29,38 @@ function Balloon({
   isCompleted, 
   bottomPosition,
   leftPosition,
-  onClick 
+  onClick,
+  className
 }: BalloonProps) {
   const [isPressed, setIsPressed] = useState(false);
 
   return (
     <div 
-      className="absolute"
+      className={`absolute ${className || ''}`}
       style={{ 
         bottom: bottomPosition,
         left: leftPosition,
         transform: 'translateX(-50%)'
       }}
     >
-      {/* String connecting to bottom - Curly/Wavy */}
+      {/* String - Curly dangling "floating" string attached to knot */}
       <svg
-        className="absolute top-full left-1/2 -translate-x-1/2 overflow-visible"
-        width="40"
-        height={parseInt(bottomPosition) > 0 ? parseInt(bottomPosition) : 100}
+        className="absolute top-[90%] left-1/2 -translate-x-1/2 overflow-visible"
+        width="50"
+        height="80"
         style={{ pointerEvents: 'none' }}
       >
         <path
-          d={`M 20 0 Q ${20 + (Math.random() > 0.5 ? 15 : -15)} ${parseInt(bottomPosition) / 2} 20 ${bottomPosition}`}
+          d={
+            (title.length % 2 === 0)
+              ? "M 25 0 C 45 15, 5 30, 25 45 S 40 70, 25 80" 
+              : "M 25 0 C 5 15, 45 30, 25 45 S 10 70, 25 80"
+          }
           stroke="hsl(var(--muted-foreground))"
           strokeWidth="1.5"
           fill="none"
           strokeOpacity="0.4"
+          strokeLinecap="round"
         />
       </svg>
 
@@ -158,6 +166,14 @@ function Balloon({
 }
 
 export function BalloonView() {
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const balloons: LessonBalloon[] = [
     // Top - Completed (green)
     {
@@ -165,7 +181,7 @@ export function BalloonView() {
       title: "Safe or Not?",
       type: "story",
       icon: BookOpen,
-      color: "bg-success",
+      color: "bg-green-500",
       shadowColor: "hsl(145, 60%, 35%)",
       isUnlocked: true,
       isCompleted: true,
@@ -343,22 +359,24 @@ export function BalloonView() {
   ];
 
   return (
-    <div className="relative w-full px-5" style={{ minHeight: '2100px', paddingBottom: '200px' }}>
-      {/* Sky background - full page */}
+    <div className="relative w-full px-5" style={{ minHeight: '1900px', paddingBottom: '150px' }}>
+      {/* Sky background - Fixed to cover entire screen */}
       <div 
-        className="absolute inset-0 -z-10 rounded-3xl overflow-hidden"
+        className="fixed inset-0 z-0 overflow-hidden"
         style={{ 
-          background: 'linear-gradient(to bottom, hsl(200 100% 85%), hsl(200 100% 95%))'
+          background: 'linear-gradient(to bottom, #dbeafe, #eff6ff)', // Baby blue gradient
         }}
       >
-        {/* Clouds */}
-        <div className="absolute top-20 left-[10%] w-24 h-12 bg-white/50 rounded-full blur-md animate-pulse" style={{ animationDuration: '4s' }} />
-        <div className="absolute top-[250px] right-[15%] w-32 h-14 bg-white/40 rounded-full blur-md animate-pulse" style={{ animationDuration: '6s' }} />
-        <div className="absolute top-[500px] left-[20%] w-20 h-10 bg-white/45 rounded-full blur-md" />
-        <div className="absolute top-[800px] right-[30%] w-28 h-12 bg-white/35 rounded-full blur-md" />
-        <div className="absolute top-[1100px] left-[15%] w-26 h-11 bg-white/38 rounded-full blur-md" />
-        <div className="absolute top-[1400px] right-[10%] w-24 h-12 bg-white/42 rounded-full blur-md" />
-        <div className="absolute top-[1700px] left-[25%] w-28 h-13 bg-white/36 rounded-full blur-md" />
+        {/* Clouds - Image Assets with Parallax - Moving UP slowly (negative Y) */}
+        <div className="absolute inset-0 w-full h-full" style={{ transform: `translateY(-${scrollY * 0.2}px)` }}>
+          <img src="/illustrations/cloud.png" alt="" className="absolute top-10 left-[10%] w-24 opacity-90 animate-pulse" style={{ animationDuration: '4s' }} />
+          <img src="/illustrations/cloud1.png" alt="" className="absolute top-[250px] right-[15%] w-32 opacity-80 animate-pulse" style={{ animationDuration: '6s' }} />
+          <img src="/illustrations/cloud.png" alt="" className="absolute top-[500px] left-[20%] w-20 opacity-85" />
+          <img src="/illustrations/cloud1.png" alt="" className="absolute top-[800px] right-[30%] w-28 opacity-80" />
+          <img src="/illustrations/cloud.png" alt="" className="absolute top-[1100px] left-[15%] w-26 opacity-85" />
+          <img src="/illustrations/cloud1.png" alt="" className="absolute top-[1400px] right-[10%] w-24 opacity-90" />
+          <img src="/illustrations/cloud.png" alt="" className="absolute top-[1700px] left-[25%] w-28 opacity-85" />
+        </div>
       </div>
 
       {/* Balloons spread vertically like roadmap */}
@@ -367,15 +385,16 @@ export function BalloonView() {
           key={balloon.id}
           {...balloon}
           onClick={() => console.log(`Clicked: ${balloon.title}`)}
+          className="z-10"
         />
       ))}
 
-      {/* Bottom Illustration */}
-      <div className="absolute bottom-0 left-0 right-0 flex justify-center pb-10">
+      {/* Bottom Illustration - On Top of Strings */}
+      <div className="absolute bottom-0 left-0 right-0 flex justify-center pb-0 pointer-events-none z-20">
         <img 
           src="/illustrations/undraw_among-nature_2f9e.svg" 
           alt="Nature Illustration" 
-          className="w-full max-w-sm opacity-90"
+          className="w-full max-w-md opacity-60"
         />
       </div>
     </div>

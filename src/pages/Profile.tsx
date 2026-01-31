@@ -64,7 +64,7 @@ export default function Profile() {
 
   const handleTabChange = (tab: TabId) => {
     if (tab !== "profile") {
-      navigate("/");
+      navigate("/", { state: { tab } });
     }
   };
 
@@ -72,163 +72,14 @@ export default function Profile() {
   const progressPercentage = Math.round((progressPoints / nextLevelPoints) * 100);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-violet-50/50 to-fuchsia-50/30 relative overflow-hidden">
-      {/* Subtle pattern overlay */}
-      <div className="absolute inset-0 opacity-[0.02]"
-        style={{
-          backgroundImage: 'radial-gradient(circle, #a855f7 1px, transparent 1px)',
-          backgroundSize: '32px 32px'
-        }}
-      />
-      
-      {/* Fluid animated gradient blobs */}
-      <div className="absolute top-20 -right-20 w-80 h-80 bg-purple-300/20 blur-3xl" 
-        style={{ 
-          animation: 'morph 12s ease-in-out infinite, float 8s ease-in-out infinite',
-          borderRadius: '60% 40% 30% 70% / 60% 30% 70% 40%'
-        }} />
-      <div className="absolute bottom-40 -left-20 w-96 h-96 bg-violet-300/15 blur-3xl" 
-        style={{ 
-          animation: 'morph 15s ease-in-out infinite reverse, float 10s ease-in-out infinite 1s',
-          borderRadius: '30% 60% 70% 40% / 50% 60% 30% 60%'
-        }} />
-      <div className="absolute top-1/3 right-10 w-64 h-64 bg-fuchsia-300/10 blur-3xl" 
-        style={{ 
-          animation: 'morph 10s ease-in-out infinite, float 7s ease-in-out infinite 2s',
-          borderRadius: '70% 30% 50% 50% / 60% 40% 60% 40%'
-        }} />
-      
-      <style dangerouslySetInnerHTML={{ __html: `
-        @keyframes paintSplash {
-          0% { 
-            clip-path: circle(0% at 50% 50%);
-            transform: scale(0.8) rotate(-5deg);
-            opacity: 0;
-          }
-          50% {
-            clip-path: circle(60% at 50% 50%);
-            transform: scale(1.1) rotate(2deg);
-          }
-          100% { 
-            clip-path: circle(100% at 50% 50%);
-            transform: scale(1) rotate(0deg);
-            opacity: 1;
-          }
-        }
-        @keyframes sketchDraw {
-          0% { 
-            stroke-dashoffset: 1000;
-            opacity: 0;
-          }
-          100% { 
-            stroke-dashoffset: 0;
-            opacity: 1;
-          }
-        }
-        @keyframes stickerPeel {
-          0% {
-            transform: perspective(400px) rotateX(0deg);
-            box-shadow: 0 0 0 rgba(0,0,0,0);
-          }
-          50% {
-            transform: perspective(400px) rotateX(10deg) translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-          }
-          100% {
-            transform: perspective(400px) rotateX(0deg);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-          }
-        }
-        @keyframes cardFlip {
-          0% { transform: perspective(600px) rotateY(0deg); }
-          100% { transform: perspective(600px) rotateY(180deg); }
-        }
-        @keyframes wiggle {
-          0%, 100% { transform: rotate(-2deg); }
-          50% { transform: rotate(2deg); }
-        }
-        @keyframes stamp {
-          0% { transform: scale(0) rotate(-15deg); opacity: 0; }
-          50% { transform: scale(1.2) rotate(5deg); }
-          100% { transform: scale(1) rotate(0deg); opacity: 1; }
-        }
-        @keyframes paperTexture {
-          0%, 100% { background-position: 0% 0%; }
-          50% { background-position: 100% 100%; }
-        }
-        @keyframes crayonStroke {
-          0% { 
-            width: 0%;
-            opacity: 0;
-          }
-          100% { 
-            width: 100%;
-            opacity: 1;
-          }
-        }
-        @keyframes bounce {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-8px); }
-        }
-        @keyframes shimmer {
-          0% { background-position: -200% center; }
-          100% { background-position: 200% center; }
-        }
-        @keyframes scratchReveal {
-          0% { opacity: 1; clip-path: inset(0 0 0 0); }
-          100% { opacity: 0; clip-path: inset(0 0 100% 0); }
-        }
-      ` }} />
-      
-      {/* Floating particles */}
-      <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-purple-400 rounded-full opacity-40 blur-sm"
-        style={{ animation: 'floatSoft 6s ease-in-out infinite' }} />
-      <div className="absolute top-1/3 right-1/3 w-3 h-3 bg-violet-400 rounded-full opacity-30 blur-sm"
-        style={{ animation: 'floatSoft 8s ease-in-out infinite 1s' }} />
-      <div className="absolute bottom-1/3 left-1/2 w-2 h-2 bg-fuchsia-400 rounded-full opacity-35 blur-sm"
-        style={{ animation: 'floatSoft 7s ease-in-out infinite 2s' }} />
-      
-      {/* Particle system */}
-      {paintSplashes.map((splash) => (
-        <div
-          key={particle.id}
-          className="fixed w-3 h-3 rounded-full pointer-events-none z-50"
-          style={{
-            left: particle.x,
-            top: particle.y,
-            backgroundColor: particle.color,
-            boxShadow: `0 0 20px ${particle.color}`,
-            animation: 'particle-float 2s ease-out forwards',
-            '--tx': `${Math.random() * 200 - 100}px`,
-            '--ty': `${Math.random() * -200 - 100}px`,
-          } as React.CSSProperties}
-        />
-      ))}
-      
-      <main className="pb-28 pt-6 px-4 max-w-md mx-auto relative z-10">
-        {/* Header */}
-        <div className="mb-6" style={{ animation: 'paintSplash 0.8s ease-out' }}>
-          <div className="flex items-start justify-between mb-6">
-            <div className="flex-1">
-              {/* Hand-drawn badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white mb-3 relative"
-                style={{ 
-                  animation: 'stamp 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
-                  boxShadow: '0 2px 8px rgba(168,85,247,0.15), inset 0 -2px 0 rgba(168,85,247,0.1)',
-                  border: '3px solid #a855f7',
-                  borderRadius: '50% 45% 55% 50%',
-                  transform: 'rotate(-2deg)'
-                }}>
-                <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" strokeWidth={2.5} style={{ filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.1))' }} />
-                <span className="text-sm font-black text-purple-600 tracking-wide" style={{ textShadow: '1px 1px 0 rgba(255,255,255,0.5)' }}>Level {level}</span>
-                {/* Stamp circles */}
-                <div className="absolute -top-1 -right-1 w-3 h-3 rounded-full border-2 border-purple-600" />
-                <div className="absolute -bottom-1 -left-1 w-3 h-3 rounded-full border-2 border-purple-600" />
-              </div>
-              <h1 className="text-3xl font-bold text-slate-900 mb-1" style={{ textShadow: '2px 2px 0 rgba(168,85,247,0.1)' }}>
-                SafetyHero
-              </h1>
-              <p className="text-sm text-slate-500 font-medium">Guardian in Training</p>
+    <div className="min-h-screen bg-background" style={{ overflowX: 'hidden' }}>
+      <main className="pb-28 pt-0">
+        <Header />
+        <div className="px-5 mt-8">
+          <div className="flex flex-col items-center mb-8">
+            <div className="w-24 h-24 bg-warm rounded-full flex items-center justify-center mb-4 bounce-in"
+              style={{ boxShadow: 'var(--shadow-warm)' }}>
+              <User className="w-12 h-12 text-warm-foreground" strokeWidth={2.5} />
             </div>
             <button
               onClick={() => console.log('Settings')}

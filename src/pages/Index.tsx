@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { BottomNav, TabId } from "@/components/BottomNav";
 import { ActionCardList } from "@/components/ActionCards";
@@ -9,11 +9,11 @@ import { MessageCircle } from "lucide-react";
 
 function NestContent() {
   return (
-    <main className="pb-28 pt-0">
+    <main className="pb-28 pt-20">
       <Header />
       
       {/* Balloon interaction for home */}
-      <div className="mt-6">
+      <div>
         <BalloonView />
       </div>
     </main>
@@ -22,7 +22,7 @@ function NestContent() {
 
 function ChatbotContent() {
   return (
-    <main className="pb-28 pt-0">
+    <main className="pb-28 pt-20">
       <Header />
       <div className="px-5 flex flex-col items-center justify-center min-h-[60vh] mt-12">
         <div className="w-24 h-24 bg-primary rounded-full flex items-center justify-center mb-6 bounce-in"
@@ -40,7 +40,7 @@ function ChatbotContent() {
 
 function SafeTipsContent() {
   return (
-    <main className="pb-28 pt-0">
+    <main className="pb-28 pt-20">
       <Header />
       
       {/* Safe tips roadmap (copy of main roadmap) */}
@@ -58,6 +58,16 @@ function SafeTipsContent() {
 export default function Index() {
   const [activeTab, setActiveTab] = useState<TabId>("nest");
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state && location.state.tab) {
+      setActiveTab(location.state.tab);
+      // Optional: clear state to prevent stuck tab on refresh if desired, 
+      // but keeping it is usually fine.
+      // navigate(location.pathname, { replace: true, state: {} }); 
+    }
+  }, [location]);
 
   const handleTabChange = (tab: TabId) => {
     if (tab === "profile") {
