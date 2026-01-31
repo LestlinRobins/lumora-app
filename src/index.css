@@ -400,3 +400,13 @@
     opacity: 1;
   }
 }
+
+/* Balloon floating animation */
+@keyframes floatBalloon {
+  0%, 100% {
+    transform: translateY(0px) translateX(-50%);
+  }
+  50% {
+    transform: translateY(-15px) translateX(-50%);
+  }
+}
