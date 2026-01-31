@@ -1,33 +1,44 @@
 import { useState } from "react";
-import { Shield, MessageCircle, Users, Star, Brain, Heart, BookOpen, Lock, CheckCircle2, Play } from "lucide-react";
+import { Shield, MessageCircle, Users, Star, Brain, Heart, BookOpen, Lock, CheckCircle2, Play, Hand, DoorOpen, Feather, Smile, Frown, Meh, ThumbsDown } from "lucide-react";
 
-interface LessonNode {
-  id: number;
+interface TipContent {
   title: string;
-  type: "story" | "quiz" | "practice" | "lesson";
-  icon: React.ReactNode;
-  color: string;
-  shadowColor: string;
-  isUnlocked: boolean;
-  isCompleted: boolean;
-  position: "left" | "center" | "right";
+  text?: string;
+  subText?: string;
+  type: 'simple' | 'examples' | 'feelings' | 'icons' | 'mascot' | 'contrast';
+  examples?: string[];
+  illustration?: string;
+  contrastExamples?: { label: string; ok: boolean }[];
+  icons?: { icon: any; label: string }[];
 }
 
-interface LessonNodeProps extends LessonNode {
-  onClick?: () => void;
+interface TipNode {
+  id: number;
+  title: string;
+  icon: any;
+  color: string;
+  shadowColor: string;
+  position: "left" | "center" | "right";
+  content: TipContent;
 }
 
 function LessonCircle({ 
   title, 
-  type, 
   icon, 
   color, 
   shadowColor, 
-  isUnlocked, 
   isCompleted,
   position,
   onClick 
-}: LessonNodeProps) {
+}: {
+  title: string;
+  icon: any;
+  color: string;
+  shadowColor: string;
+  isCompleted: boolean;
+  position: "left" | "center" | "right";
+  onClick: () => void;
+}) {
   const [isPressed, setIsPressed] = useState(false);
   
   const positionClass = {
@@ -39,75 +50,46 @@ function LessonCircle({
   return (
     <div className={`relative ${positionClass} w-fit`}>
       <button
-        onClick={isUnlocked ? onClick : undefined}
-        onMouseDown={() => isUnlocked && setIsPressed(true)}
+        onClick={onClick}
+        onMouseDown={() => setIsPressed(true)}
         onMouseUp={() => setIsPressed(false)}
         onMouseLeave={() => setIsPressed(false)}
-        onTouchStart={() => isUnlocked && setIsPressed(true)}
+        onTouchStart={() => setIsPressed(true)}
         onTouchEnd={() => setIsPressed(false)}
-        disabled={!isUnlocked}
-        className={`
-          relative flex flex-col items-center gap-2 transition-all duration-200
-          ${isUnlocked ? 'cursor-pointer' : 'cursor-not-allowed opacity-60'}
-        `}
+        className="relative flex flex-col items-center gap-2 transition-all duration-200 cursor-pointer group"
       >
         {/* Main lesson circle */}
         <div 
           className={`
             w-20 h-20 rounded-full flex items-center justify-center relative
-            transition-all duration-200
-            ${isUnlocked ? color : 'bg-muted'}
-            ${isCompleted ? 'ring-4 ring-success/30' : ''}
+            transition-all duration-500
+            ${isCompleted ? 'bg-purple-500' : color}
+            ${isCompleted ? 'ring-4 ring-purple-300' : ''}
           `}
           style={{
-            boxShadow: isPressed && isUnlocked
-              ? `0 2px 0 0 ${shadowColor}`
-              : isUnlocked 
-                ? `0 6px 0 0 ${shadowColor}`
-                : 'none',
-            transform: isPressed && isUnlocked ? 'translateY(4px)' : 'translateY(0)',
+            boxShadow: isPressed
+              ? `0 2px 0 0 ${isCompleted ? '#7c3aed' : shadowColor}`
+              : `0 6px 0 0 ${isCompleted ? '#7c3aed' : shadowColor}`,
+            transform: isPressed ? 'translateY(4px)' : 'translateY(0)',
           }}
         >
-          {/* Icon or lock */}
-          {isUnlocked ? (
-            <div className="relative">
-              {icon}
-              {/* Completion checkmark */}
-              {isCompleted && (
-                <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-success rounded-full flex items-center justify-center border-2 border-white scale-bounce">
-                  <CheckCircle2 className="w-4 h-4 text-success-foreground" strokeWidth={3} />
-                </div>
-              )}
-            </div>
-          ) : (
-            <Lock className="w-8 h-8 text-muted-foreground" strokeWidth={2.5} />
-          )}
-          
-          {/* Shine effect */}
-          {isUnlocked && (
-            <div className="absolute inset-0 bg-white/20 rounded-full" />
-          )}
+          <div className="relative text-white">
+            {icon}
+            {isCompleted && (
+              <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center border-2 border-white scale-bounce">
+                <CheckCircle2 className="w-4 h-4 text-white" strokeWidth={3} />
+              </div>
+            )}
+          </div>
+          <div className="absolute inset-0 bg-white/20 rounded-full" />
         </div>
 
-        {/* Lesson title */}
-        <div className="text-center max-w-[100px]">
-          <p className={`text-xs font-bold ${isUnlocked ? 'text-foreground' : 'text-muted-foreground'}`}>
+        {/* Title */}
+        <div className="text-center max-w-[120px]">
+          <p className={`text-xs font-bold text-foreground group-hover:scale-105 transition-transform`}>
             {title}
           </p>
-          {type && isUnlocked && (
-            <p className="text-[10px] font-semibold text-muted-foreground capitalize mt-0.5">
-              {type}
-            </p>
-          )}
         </div>
-
-        {/* Play indicator for active lesson */}
-        {isUnlocked && !isCompleted && (
-          <div className="absolute -right-2 top-6 w-8 h-8 bg-accent rounded-full flex items-center justify-center pulse-glow"
-            style={{ boxShadow: 'var(--shadow-button-accent)' }}>
-            <Play className="w-4 h-4 text-accent-foreground fill-current ml-0.5" strokeWidth={0} />
-          </div>
-        )}
       </button>
     </div>
   );
@@ -120,156 +102,372 @@ function PathConnector({
   fromPosition: "left" | "center" | "right";
   toPosition: "left" | "center" | "right";
 }) {
-  // Calculate positions for the path
-  const positions = {
-    left: 80,    // 32px margin + 40px (half of circle)
-    center: 150, // Center of container (assuming ~300px width)
-    right: 220,  // Right side
-  };
-
+  const positions = { left: 80, center: 150, right: 220 };
   const startX = positions[fromPosition];
   const endX = positions[toPosition];
-  const height = 48; // Height of the connector
+  const height = 64; 
 
-  // Create a smooth curved path
-  const controlPointOffset = 30;
-  const path = `M ${startX} 0 Q ${startX} ${controlPointOffset}, ${(startX + endX) / 2} ${height / 2} T ${endX} ${height}`;
+  const path = `M ${startX} 0 Q ${startX} 30, ${(startX + endX) / 2} ${height / 2} T ${endX} ${height}`;
 
   return (
-    <div className="relative w-full h-12 overflow-visible">
-      <svg 
-        className="absolute top-0 left-0 w-full h-full overflow-visible" 
-        style={{ minWidth: '300px' }}
-        viewBox="0 0 300 48"
-        preserveAspectRatio="none"
-      >
-        {/* Dotted path for visual guide */}
-        <path
-          d={path}
-          fill="none"
-          stroke="hsl(var(--border))"
-          strokeWidth="3"
-          strokeDasharray="6 4"
-          strokeLinecap="round"
-          opacity="0.6"
-        />
+    <div className="relative w-full h-16 overflow-visible">
+      <svg className="absolute top-0 left-0 w-full h-full overflow-visible" viewBox="0 0 300 64" preserveAspectRatio="none">
+        <path d={path} fill="none" stroke="hsl(var(--border))" strokeWidth="3" strokeDasharray="6 4" strokeLinecap="round" opacity="0.6" />
       </svg>
     </div>
   );
 }
 
+import Lottie from "lottie-react";
+
+// ... existing interfaces ...
+
 export function ActionCardList() {
-  const lessons: LessonNode[] = [
+  const [activeTipId, setActiveTipId] = useState<number | null>(null);
+  const [completedTips, setCompletedTips] = useState<number[]>([1]); 
+  const [isClosing, setIsClosing] = useState(false);
+  const [showCelebration, setShowCelebration] = useState(false);
+  const [celebrationData, setCelebrationData] = useState<any>(null);
+  const [celebrationText, setCelebrationText] = useState("");
+
+  const animationFiles = [
+    "Celebration balloon confetti animation.json", 
+    "Champion.json", 
+    "Trophy.json"
+  ];
+
+  const phrases = [
+    "Yayyy, that's one more tip learnt!", 
+    "You're getting safer every day!", 
+    "Awesome job!", 
+    "You are a safety superstar!",
+    "Great work!"
+  ];
+
+  // ... tips array ...
+  const tips: TipNode[] = [
     {
       id: 1,
-      title: "Safe or Not Safe?",
-      type: "story",
-      icon: <BookOpen className="w-9 h-9 text-primary-foreground" strokeWidth={2.5} />,
-      color: "bg-primary",
-      shadowColor: "hsl(265, 75%, 45%)",
-      isUnlocked: true,
-      isCompleted: true,
+      title: "You Can Say No",
+      icon: <Shield className="w-9 h-9" strokeWidth={2.5} />,
+      color: "bg-blue-500",
+      shadowColor: "#2563eb", 
       position: "center",
+      content: {
+        type: "examples",
+        title: "You Can Say No",
+        text: "You don’t have to say yes to anything that makes you uncomfortable.",
+        examples: ["No, I don't want to play.", "Stop, I don't like that."]
+      }
     },
     {
       id: 2,
-      title: "What Are Drugs?",
-      type: "quiz",
-      icon: <Brain className="w-9 h-9 text-secondary-foreground" strokeWidth={2.5} />,
-      color: "bg-secondary",
-      shadowColor: "hsl(210, 90%, 45%)",
-      isUnlocked: true,
-      isCompleted: false,
+      title: "Leaving Is Always Okay",
+      icon: <DoorOpen className="w-9 h-9" strokeWidth={2.5} />,
+      color: "bg-orange-500",
+      shadowColor: "#ea580c",
       position: "left",
+      content: {
+        type: "simple",
+        title: "Leaving Is Always Okay",
+        text: "If something feels wrong, you can leave.",
+        illustration: "run" 
+      }
     },
     {
       id: 3,
-      title: "Say No Practice",
-      type: "practice",
-      icon: <Shield className="w-9 h-9 text-accent-foreground" strokeWidth={2.5} />,
-      color: "bg-accent",
-      shadowColor: "hsl(185, 85%, 40%)",
-      isUnlocked: true,
-      isCompleted: false,
+      title: "Tell a Safe Grown-Up",
+      icon: <Users className="w-9 h-9" strokeWidth={2.5} />,
+      color: "bg-green-500",
+      shadowColor: "#16a34a",
       position: "right",
+      content: {
+        type: "icons",
+        title: "Tell a Safe Grown-Up",
+        text: "Talking to someone you trust can help.",
+        icons: [
+          { icon: <Users size={32} />, label: "Parent" },
+          { icon: <BookOpen size={32} />, label: "Teacher" },
+          { icon: <Heart size={32} />, label: "Counselor" }
+        ]
+      }
     },
     {
       id: 4,
-      title: "Trusted Adults",
-      type: "lesson",
-      icon: <Users className="w-9 h-9 text-warm-foreground" strokeWidth={2.5} />,
-      color: "bg-warm",
-      shadowColor: "hsl(340, 85%, 55%)",
-      isUnlocked: false,
-      isCompleted: false,
+      title: "Bad Secrets Aren’t Okay",
+      icon: <Lock className="w-9 h-9" strokeWidth={2.5} />,
+      color: "bg-indigo-500",
+      shadowColor: "#4f46e5",
       position: "center",
+      content: {
+        type: "contrast",
+        title: "Bad Secrets Aren’t Okay",
+        text: "This is one of the most important safety concepts.",
+        contrastExamples: [
+          { label: "Surprise gift", ok: true },
+          { label: "“Don’t tell or else…”", ok: false }
+        ]
+      }
     },
     {
       id: 5,
-      title: "Feelings Check",
-      type: "story",
-      icon: <Heart className="w-9 h-9 text-success-foreground" strokeWidth={2.5} />,
-      color: "bg-success",
-      shadowColor: "hsl(145, 60%, 40%)",
-      isUnlocked: false,
-      isCompleted: false,
+      title: "Your Feelings Matter",
+      icon: <Heart className="w-9 h-9" strokeWidth={2.5} />,
+      color: "bg-yellow-400",
+      shadowColor: "#ca8a04",
       position: "left",
+      content: {
+        type: "feelings",
+        title: "Your Feelings Matter",
+        text: "Thanks for checking in.",
+        subText: "No advice. Just validation."
+      }
     },
     {
       id: 6,
-      title: "Safety Quiz",
-      type: "quiz",
-      icon: <Star className="w-9 h-9 text-primary-foreground" strokeWidth={2.5} />,
-      color: "bg-primary",
-      shadowColor: "hsl(265, 75%, 45%)",
-      isUnlocked: false,
-      isCompleted: false,
+      title: "You’re Not in Trouble",
+      icon: <Star className="w-9 h-9" strokeWidth={2.5} />,
+      color: "bg-pink-500",
+      shadowColor: "#db2777",
       position: "right",
+      content: {
+        type: "simple",
+        title: "You’re Not in Trouble",
+        text: "Even if something already happened, you can still ask for help."
+      }
     },
+    {
+      id: 7,
+      title: "You Don’t Need a Reason",
+      icon: <MessageCircle className="w-9 h-9" strokeWidth={2.5} />,
+      color: "bg-teal-500",
+      shadowColor: "#0d9488",
+      position: "center",
+      content: {
+        type: "examples",
+        title: "You Don’t Need a Reason",
+        text: "This builds confidence without confrontation.",
+        examples: ["No is enough.", "You don’t have to explain."]
+      }
+    },
+    {
+      id: 8,
+      title: "You’re Not Alone",
+      icon: <Feather className="w-9 h-9" strokeWidth={2.5} />,
+      color: "bg-sky-500",
+      shadowColor: "#0284c7",
+      position: "center",
+      content: {
+        type: "mascot",
+        title: "You’re Not Alone",
+        text: "I’m here with you."
+      }
+    }
   ];
 
+  const handleTipClick = (id: number) => {
+    setActiveTipId(id);
+    setIsClosing(false);
+    setShowCelebration(false);
+  };
+
+  const handleGotIt = async () => {
+    // Select random animation and text
+    const randomAnim = animationFiles[Math.floor(Math.random() * animationFiles.length)];
+    const randomText = phrases[Math.floor(Math.random() * phrases.length)];
+    
+    setCelebrationText(randomText);
+
+    try {
+        const response = await fetch(`/animations/${randomAnim}`);
+        if(response.ok) {
+            const json = await response.json();
+            setCelebrationData(json);
+            setShowCelebration(true);
+            
+            // Show celebration for 3 seconds, then slide out with celebration still visible
+            setTimeout(() => {
+                setIsClosing(true);
+                // Cleanup after slide completes
+                setTimeout(() => {
+                  if (activeTipId !== null && !completedTips.includes(activeTipId)) {
+                    setCompletedTips(prev => [...prev, activeTipId]);
+                  }
+                  setActiveTipId(null);
+                  setIsClosing(false);
+                  setShowCelebration(false);
+                  setCelebrationData(null);
+                }, 450);
+            }, 3000);
+        } else {
+            // Fallback if fetch fails
+            handleClose(true);
+        }
+    } catch (e) {
+        console.error("Failed to load animation", e);
+        handleClose(true);
+    }
+  };
+
+  const handleClose = (markCompleted = false) => {
+    setIsClosing(true);
+    setTimeout(() => {
+      if (markCompleted && activeTipId !== null && !completedTips.includes(activeTipId)) {
+        setCompletedTips(prev => [...prev, activeTipId]);
+      }
+      setActiveTipId(null);
+      setIsClosing(false);
+      setShowCelebration(false);
+      setCelebrationData(null); 
+    }, 450);
+  };
+
+  const activeTip = tips.find(t => t.id === activeTipId);
+
   return (
-    <div className="px-5">
-      {/* Section header */}
+    <div className="px-5 relative">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-extrabold text-foreground">Learning Path</h2>
-        <div className="flex items-center gap-1.5 text-accent-foreground bg-accent px-3 py-1.5 rounded-full border-2 border-accent/30 scale-bounce">
-          <Star className="w-5 h-5 fill-current" />
-          <span className="text-sm font-bold">35 XP</span>
-        </div>
+        <h2 className="text-xl font-extrabold text-foreground">Safety Tips</h2>
       </div>
       
-      {/* Roadmap - Fixed height to prevent navbar jumping */}
-      <div className="relative py-4" style={{ minHeight: '600px' }}>
-        {lessons.map((lesson, index) => (
-          <div key={lesson.id} className="pop-in" style={{ animationDelay: `${index * 100}ms` }}>
+      <div className="relative py-4 pb-20">
+        {tips.map((tip, index) => (
+          <div key={tip.id} className="relative z-10">
             <LessonCircle
-              {...lesson}
-              onClick={() => console.log(`Clicked: ${lesson.title}`)}
+              title={tip.title}
+              icon={tip.icon}
+              color={tip.color}
+              shadowColor={tip.shadowColor}
+              isCompleted={completedTips.includes(tip.id)}
+              position={tip.position}
+              onClick={() => handleTipClick(tip.id)}
             />
-            {index < lessons.length - 1 && (
-              <PathConnector 
-                fromPosition={lesson.position} 
-                toPosition={lessons[index + 1].position} 
-              />
+            {index < tips.length - 1 && (
+              <PathConnector fromPosition={tip.position} toPosition={tips[index + 1].position} />
             )}
           </div>
         ))}
       </div>
 
-      {/* Progress indicator */}
-      <div className="mt-6 p-4 bg-muted/50 rounded-2xl border-2 border-border">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-bold text-foreground">Your Progress</span>
-          <span className="text-sm font-extrabold text-primary">1/6 Complete</span>
+      {/* Full Screen Tip View */}
+      {activeTipId && (
+        <div 
+          className={`
+            fixed inset-0 z-[100] bg-background
+            transition-all duration-400 ease-in-out
+            ${isClosing ? 'translate-x-[-100%] opacity-0' : 'translate-x-0 opacity-100'}
+          `}
+        >
+          {/* Close / Back Button */}
+          <button 
+            onClick={() => handleClose(false)} 
+            className={`absolute top-6 left-6 p-2 rounded-full bg-muted/30 hover:bg-muted text-muted-foreground transition-all z-10 ${showCelebration ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          </button>
+
+          {/* Tip Content */}
+          <div className={`w-full h-full flex flex-col items-center justify-start p-6 pt-20 pb-8 overflow-y-auto transition-opacity duration-300 ${showCelebration ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+            <div className="w-full max-w-md flex flex-col items-center text-center gap-6">
+              {/* Big Icon */}
+              <div className={`w-32 h-32 shrink-0 rounded-full flex items-center justify-center ${activeTip.color} text-white shadow-2xl bounce-in`}>
+                <div style={{ transform: 'scale(1.5)' }}>
+                  {activeTip.icon}
+                </div>
+              </div>
+              
+              <div className="space-y-4">
+                <h3 className="text-3xl font-black text-foreground tracking-tight leading-tight">{activeTip.content.title}</h3>
+                
+                {activeTip.content.text && (
+                  <p className="text-xl font-medium text-muted-foreground leading-relaxed px-2">
+                    {activeTip.content.text}
+                  </p>
+                )}
+              </div>
+
+              {/* Dynamic Content */}
+              {activeTip.content.type === 'examples' && activeTip.content.examples && (
+                <div className="flex flex-col gap-3 w-full">
+                  {activeTip.content.examples.map((ex, i) => (
+                    <div key={i} className="bg-muted/30 p-4 rounded-2xl font-bold text-lg text-foreground border-2 border-transparent hover:border-primary/20 transition-all">
+                      "{ex}"
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {activeTip.content.type === 'contrast' && activeTip.content.contrastExamples && (
+                <div className="flex flex-col gap-3 w-full">
+                  {activeTip.content.contrastExamples.map((item, i) => (
+                    <div key={i} className={`p-4 rounded-2xl font-bold text-lg border-2 flex justify-between items-center ${item.ok ? 'bg-green-50/50 border-green-200 text-green-800' : 'bg-red-50/50 border-red-200 text-red-800'}`}>
+                      <span>{item.label}</span>
+                      <span className="text-2xl">{item.ok ? '🎁' : '🤫'}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+              
+              {activeTip.content.type === 'feelings' && (
+                <div className="grid grid-cols-2 gap-4 w-full">
+                   {['Okay', 'Confused', 'Uncomfy', 'Unsafe'].map((emote, i) => (
+                     <div key={i} className={`p-4 rounded-2xl bg-${['green','yellow','orange','red'][i]}-100 text-${['green','yellow','orange','red'][i]}-700 font-bold text-lg shadow-sm transform hover:scale-105 transition-transform`}>
+                       {emote}
+                     </div>
+                   ))}
+                </div>
+              )}
+
+              {activeTip.content.type === 'icons' && activeTip.content.icons && (
+                <div className="flex gap-6 justify-center flex-wrap">
+                   {activeTip.content.icons.map((item, i) => (
+                     <div key={i} className="flex flex-col items-center gap-2">
+                       <div className="w-16 h-16 bg-accent/20 rounded-full flex items-center justify-center text-accent-foreground">
+                         {item.icon}
+                       </div>
+                       <span className="text-sm font-bold text-muted-foreground">{item.label}</span>
+                     </div>
+                   ))}
+                </div>
+              )}
+              
+              {activeTip.content.type === 'simple' && activeTip.content.illustration && (
+                 <div className="text-6xl animate-pulse">
+                    {activeTip.title.includes("Leaving") ? "🏃💨" : "⭐"}
+                 </div>
+              )}
+
+              {/* Got it Button - Fixed at bottom */}
+              <div className="w-full pt-6 pb-4">
+                 <button 
+                   onClick={handleGotIt}
+                   className="w-full bg-primary text-primary-foreground py-4 rounded-2xl font-black text-xl shadow-xl shadow-primary/20 active:scale-95 transition-transform"
+                 >
+                   Got it!
+                 </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Celebration Content - Same Page */}
+          <div className={`absolute inset-0 w-full h-full flex flex-col items-center justify-center p-6 transition-opacity duration-300 ${showCelebration ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+            <div className="w-full max-w-md flex flex-col items-center text-center">
+              <div className="w-64 h-64 mb-6 shrink-0">
+                {celebrationData && (
+                  <Lottie 
+                    animationData={celebrationData}
+                    loop={true}
+                    autoplay={true}
+                  />
+                )}
+              </div>
+              <h2 className="text-3xl font-black text-foreground mb-3 px-4 leading-tight animate-in slide-in-from-bottom-4 duration-500 delay-150">
+                {celebrationText}
+              </h2>
+            </div>
+          </div>
         </div>
-        <div className="h-2.5 bg-card rounded-full overflow-hidden border border-border">
-          <div 
-            className="h-full bg-primary rounded-full transition-all duration-700"
-            style={{ width: "16.67%" }}
-          />
-        </div>
-      </div>
+      )}
     </div>
   );
 }

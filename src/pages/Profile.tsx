@@ -8,7 +8,7 @@ export default function Profile() {
 
   const handleTabChange = (tab: TabId) => {
     if (tab !== "profile") {
-      navigate("/");
+      navigate("/", { state: { tab } });
     }
   };
 
