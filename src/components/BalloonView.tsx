@@ -1,6 +1,9 @@
 
 import { useState, useEffect } from "react";
-import { Shield, Users, Heart, BookOpen, Star, Brain, Lock, CheckCircle2, Play } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Shield, Users, Heart, BookOpen, Star, Brain, Lock, CheckCircle2, Play, RotateCcw } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 interface LessonBalloon {
   id: number;
@@ -166,13 +169,38 @@ function Balloon({
 }
 
 export function BalloonView() {
+  const navigate = useNavigate();
   const [scrollY, setScrollY] = useState(0);
+  const [completedBalloons, setCompletedBalloons] = useState<number[]>([]);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    // Load completed balloons from localStorage
+    const completed = JSON.parse(localStorage.getItem("completedBalloons") || "[]");
+    setCompletedBalloons(completed);
+  }, []);
+
+  const handleBalloonClick = (balloon: LessonBalloon) => {
+    if (balloon.isUnlocked) {
+      navigate("/quiz", { 
+        state: { 
+          balloonId: balloon.id, 
+          balloonTitle: balloon.title 
+        } 
+      });
+    }
+  };
+
+  const resetAllProgress = () => {
+    localStorage.removeItem("completedBalloons");
+    setCompletedBalloons([]);
+    toast.success("All progress has been reset! 🔄");
+  };
 
   const balloons: LessonBalloon[] = [
     // Top - Completed (green)
@@ -184,7 +212,7 @@ export function BalloonView() {
       color: "bg-green-500",
       shadowColor: "hsl(145, 60%, 35%)",
       isUnlocked: true,
-      isCompleted: true,
+      isCompleted: completedBalloons.includes(1),
       bottomPosition: "1800px",
       leftPosition: "50%",
     },
@@ -198,7 +226,7 @@ export function BalloonView() {
       color: "bg-secondary",
       shadowColor: "hsl(210, 90%, 40%)",
       isUnlocked: true,
-      isCompleted: false,
+      isCompleted: completedBalloons.includes(2),
       bottomPosition: "1650px",
       leftPosition: "20%",
     },
@@ -212,7 +240,7 @@ export function BalloonView() {
       color: "bg-primary",
       shadowColor: "hsl(265, 75%, 40%)",
       isUnlocked: true,
-      isCompleted: false,
+      isCompleted: completedBalloons.includes(3),
       bottomPosition: "1500px",
       leftPosition: "75%",
     },
@@ -226,7 +254,7 @@ export function BalloonView() {
       color: "bg-warm",
       shadowColor: "hsl(340, 85%, 50%)",
       isUnlocked: true,
-      isCompleted: false,
+      isCompleted: completedBalloons.includes(4),
       bottomPosition: "1350px",
       leftPosition: "50%",
     },
@@ -240,7 +268,7 @@ export function BalloonView() {
       color: "bg-accent",
       shadowColor: "hsl(185, 85%, 35%)",
       isUnlocked: true,
-      isCompleted: false,
+      isCompleted: completedBalloons.includes(5),
       bottomPosition: "1200px",
       leftPosition: "25%",
     },
@@ -254,7 +282,7 @@ export function BalloonView() {
       color: "bg-warm",
       shadowColor: "hsl(340, 85%, 50%)",
       isUnlocked: true,
-      isCompleted: false,
+      isCompleted: completedBalloons.includes(6),
       bottomPosition: "1050px",
       leftPosition: "70%",
     },
@@ -268,7 +296,7 @@ export function BalloonView() {
       color: "bg-secondary",
       shadowColor: "hsl(210, 90%, 40%)",
       isUnlocked: true,
-      isCompleted: false,
+      isCompleted: completedBalloons.includes(7),
       bottomPosition: "900px",
       leftPosition: "35%",
     },
@@ -282,7 +310,7 @@ export function BalloonView() {
       color: "bg-primary",
       shadowColor: "hsl(265, 75%, 40%)",
       isUnlocked: false,
-      isCompleted: false,
+      isCompleted: completedBalloons.includes(8),
       bottomPosition: "750px",
       leftPosition: "65%",
     },
@@ -296,7 +324,7 @@ export function BalloonView() {
       color: "bg-accent",
       shadowColor: "hsl(185, 85%, 35%)",
       isUnlocked: false,
-      isCompleted: false,
+      isCompleted: completedBalloons.includes(9),
       bottomPosition: "600px",
       leftPosition: "50%",
     },
@@ -310,7 +338,7 @@ export function BalloonView() {
       color: "bg-success",
       shadowColor: "hsl(145, 60%, 35%)",
       isUnlocked: false,
-      isCompleted: false,
+      isCompleted: completedBalloons.includes(10),
       bottomPosition: "450px",
       leftPosition: "20%",
     },
@@ -324,7 +352,7 @@ export function BalloonView() {
       color: "bg-warm",
       shadowColor: "hsl(340, 85%, 50%)",
       isUnlocked: false,
-      isCompleted: false,
+      isCompleted: completedBalloons.includes(11),
       bottomPosition: "300px",
       leftPosition: "75%",
     },
@@ -338,7 +366,7 @@ export function BalloonView() {
       color: "bg-secondary",
       shadowColor: "hsl(210, 90%, 40%)",
       isUnlocked: false,
-      isCompleted: false,
+      isCompleted: completedBalloons.includes(12),
       bottomPosition: "150px",
       leftPosition: "40%",
     },
@@ -352,7 +380,7 @@ export function BalloonView() {
       color: "bg-primary",
       shadowColor: "hsl(265, 75%, 40%)",
       isUnlocked: false,
-      isCompleted: false,
+      isCompleted: completedBalloons.includes(13),
       bottomPosition: "0px",
       leftPosition: "65%",
     },
@@ -360,6 +388,17 @@ export function BalloonView() {
 
   return (
     <div className="relative w-full px-5" style={{ minHeight: '1900px', paddingBottom: '150px' }}>
+      {/* Reset Progress Button - Fixed at bottom right near balloons */}
+      <Button
+        onClick={resetAllProgress}
+        className="fixed bottom-32 right-5 z-30 rounded-full w-14 h-14 shadow-lg"
+        variant="secondary"
+        size="icon"
+        title="Reset all progress"
+      >
+        <RotateCcw className="w-5 h-5" />
+      </Button>
+
       {/* Sky background - Fixed to cover entire screen */}
       <div 
         className="fixed inset-0 z-0 overflow-hidden"
@@ -384,7 +423,7 @@ export function BalloonView() {
         <Balloon
           key={balloon.id}
           {...balloon}
-          onClick={() => console.log(`Clicked: ${balloon.title}`)}
+          onClick={() => handleBalloonClick(balloon)}
           className="z-10"
         />
       ))}
