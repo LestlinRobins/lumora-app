@@ -497,12 +497,12 @@ export function BalloonView() {
   )?.id;
 
   return (
-    <div className="relative w-full px-5" style={{ minHeight: '1900px', paddingBottom: '150px' }}>
+    <div className="relative w-full px-5" style={{ minHeight: '1900px', paddingBottom: '150px', marginTop: '40px' }}>
       {/* Sky background - Fixed to cover entire screen */}
       <div 
         className="fixed inset-0 z-0 overflow-hidden"
         style={{ 
-          background: 'linear-gradient(to bottom, #dbeafe, #eff6ff)', // Baby blue gradient
+          background: 'linear-gradient(to bottom, #87b8f8ff, #eff6ff)', // Baby blue gradient
         }}
       >
         {/* Clouds - Image Assets with Parallax - Moving UP slowly (negative Y) */}

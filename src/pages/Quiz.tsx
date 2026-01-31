@@ -12,6 +12,7 @@ import sadStarAnimation from "@/animations/Sad Star.json";
 import cryingEmojiAnimation from "@/animations/Crying emoji.json";
 import { addCarrots } from "@/lib/carrots";
 import { setPendingCarrotReward } from "@/components/FlyingCarrots";
+import { hapticLight } from "@/lib/haptics";
 import { motion } from "motion/react";
 
 interface QuizQuestion {
@@ -305,7 +306,12 @@ export default function Quiz() {
                   transition={{ duration: 0.4, delay: 0.4 + (index * 0.1) }}
                 >
                 <button
-                  onClick={() => !showResult && setSelectedOption(index)}
+                  onClick={() => {
+                    if (!showResult) {
+                      hapticLight();
+                      setSelectedOption(index);
+                    }
+                  }}
                   disabled={showResult}
                   className={`
                     w-full p-4 rounded-2xl text-left font-semibold text-base
@@ -358,7 +364,7 @@ export default function Quiz() {
           >
           {!showResult ? (
             <Button
-              onClick={handleSubmit}
+              onClick={() => { hapticLight(); handleSubmit(); }}
               className="w-full h-14 text-lg font-bold rounded-2xl"
               style={{ boxShadow: 'var(--shadow-button-primary)' }}
             >
@@ -366,7 +372,7 @@ export default function Quiz() {
             </Button>
           ) : !isCorrect ? (
             <Button
-              onClick={handleRetry}
+              onClick={() => { hapticLight(); handleRetry(); }}
               className="w-full h-14 text-lg font-bold rounded-2xl bg-accent hover:bg-accent/90"
               style={{ boxShadow: 'var(--shadow-button-accent)' }}
             >

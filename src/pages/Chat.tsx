@@ -7,6 +7,7 @@ import { BottomNav, TabId } from "@/components/BottomNav";
 import { Header } from "@/components/Header";
 import { ArrowLeft, Mic, MicOff, Volume2, Send } from "lucide-react";
 import { toast } from "sonner";
+import { hapticLight } from "@/lib/haptics";
 
 interface Message {
   id: string;
@@ -327,18 +328,18 @@ Always end answers with encouragement, reassurance, or a healthy alternative.`;
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-white flex flex-col">
       {/* Header */}
       <Header />
 
       {/* White mask layer between video and chat (prevents chat from showing behind video) */}
       <div
-        className="fixed top-10 left-0 right-0 z-30 bg-white pointer-events-none"
+        className="fixed top-10 left-0 right-0 z-30  pointer-events-none"
         style={{ height: '28vh' }}
       />
 
       {/* Avatar Video - Fixed at top, reduced size */}
-      <div className="fixed top-16 left-0 right-0 z-40 px-5 pt-0" style={{ height: '25vh' }}>
+      <div className="fixed top-24 left-0 right-0 z-40 px-5 pt-0 " style={{ height: '30vh' }}>
         <div className="max-w-lg mx-auto h-full">
           <div
             className="relative w-full h-full overflow-hidden rounded-2xl"
@@ -381,7 +382,7 @@ Always end answers with encouragement, reassurance, or a healthy alternative.`;
           <div style={{ height: 'calc(25vh + 0.5rem)' }} />
 
           {/* Chat Messages */}
-          <div className="px-5 py-4 space-y-3">
+          <div className="px-5 py-20 space-y-3 top-12">
             {messages.length === 0 ? (
               <div className="flex items-center justify-center py-8">
                 <div className="text-center">
@@ -394,7 +395,7 @@ Always end answers with encouragement, reassurance, or a healthy alternative.`;
                 </div>
               </div>
             ) : (
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-3 mt-4">
                 {messages.map((message) => (
                   <div
                     key={message.id}
@@ -430,12 +431,19 @@ Always end answers with encouragement, reassurance, or a healthy alternative.`;
       </main>
 
       {/* Input Area - Fixed at Bottom - Mic-focused design */}
-      <div className="fixed bottom-[90px] left-0 right-0 z-[900] bg-gradient-to-t from-card via-card to-card/80 backdrop-blur-lg px-5 py-4">
+      <div className="fixed bottom-[90px] left-0 right-0 z-[900] bg-white px-5 py-4">
         <div className="max-w-lg mx-auto">
           {/* Main Mic Button - Large and centered */}
           <div className="flex flex-col items-center gap-2">
             <Button
-              onClick={isRecording ? stopRecording : startRecording}
+              onClick={() => {
+                hapticLight();
+                if (isRecording) {
+                  stopRecording();
+                } else {
+                  startRecording();
+                }
+              }}
               disabled={isPlaying || isProcessing}
               size="icon"
               className={`rounded-full w-16 h-16 transition-all duration-300 ${
@@ -461,7 +469,7 @@ Always end answers with encouragement, reassurance, or a healthy alternative.`;
           </div>
 
           {/* Text input row - Secondary */}
-          <div className="flex items-center gap-2 mt-3">
+          <div className="flex items-center gap-2 mt-3 mb-4">
             <Input
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
@@ -471,11 +479,14 @@ Always end answers with encouragement, reassurance, or a healthy alternative.`;
               className="flex-1 rounded-full h-10 text-sm"
             />
             <Button
-              onClick={handleSendText}
+              onClick={() => {
+                hapticLight();
+                handleSendText();
+              }}
               disabled={!inputText.trim() || isRecording || isPlaying || isProcessing}
               size="icon"
-              variant="secondary"
-              className="rounded-full w-10 h-10"
+              className="rounded-full w-10 h-10 bg-primary hover:bg-primary/90 text-primary-foreground"
+              style={{ boxShadow: 'var(--shadow-button-primary)' }}
             >
               <Send className="w-4 h-4" />
             </Button>

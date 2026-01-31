@@ -273,15 +273,7 @@ export default function Carrots() {
           </div>
 
           {/* Motivational Message */}
-          <Card className="p-5 bg-gradient-to-r from-purple-100 to-pink-100 border-purple-200">
-            <div className="text-center">
-              <div className="text-3xl mb-2">🌟</div>
-              <h4 className="font-extrabold text-purple-700 mb-1">Keep Going!</h4>
-              <p className="text-sm text-purple-600">
-                Every lesson makes you smarter and safer. You're doing amazing!
-              </p>
-            </div>
-          </Card>
+          
         </div>
       </main>
 

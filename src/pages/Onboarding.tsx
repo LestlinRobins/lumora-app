@@ -198,9 +198,9 @@ export default function Onboarding() {
       key="screen-1"
       className="max-w-md w-full flex flex-col items-center justify-center px-6"
     >
-      <div className="fixed top-2 left-4 z-50">
-            <Button variant="ghost" size="icon" onClick={handleBack} className="rounded-full">
-                <ArrowLeft className="w-6 h-6 text-muted-foreground" />
+      <div className="fixed -top-36 left-6 z-50">
+            <Button variant="ghost" size="icon" onClick={handleBack} className="rounded-full hover:bg-black/5">
+                <ArrowLeft className="w-35 h-35 text-foreground/80" />
             </Button>
         </div>
 
@@ -254,22 +254,18 @@ export default function Onboarding() {
           ))}
       </motion.div>
 
-      <AnimatePresence>
-        {formData.avatar && (
-            <motion.div
-                className="w-full"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-            >
-                <Button
-                onClick={handleNext}
-                className="w-full h-14 rounded-full text-lg font-bold shadow-lg hover:shadow-xl transition-all btn-bouncy bg-primary hover:bg-primary/90 text-white"
-                >
-                Looks Good!
-                </Button>
-            </motion.div>
-        )}
-      </AnimatePresence>
+      <motion.div
+        className={`w-full ${!formData.avatar ? "pointer-events-none opacity-0" : "opacity-100"}`}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: formData.avatar ? 1 : 0, y: formData.avatar ? 0 : 20 }}
+      >
+        <Button
+        onClick={handleNext}
+        className="w-full h-14 rounded-full text-lg font-bold shadow-lg hover:shadow-xl transition-all btn-bouncy bg-primary hover:bg-primary/90 text-white"
+        >
+        Looks Good!
+        </Button>
+      </motion.div>
     </div>,
 
     // Screen 2: Guardian Info

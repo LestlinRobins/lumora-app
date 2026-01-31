@@ -339,8 +339,8 @@ export function ActionCardList() {
 
   return (
     <div className="px-5 relative">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-black text-foreground">Care</h2>
+      <div className="flex items-center justify-between mb-6 -mt-4">
+        <h2 className="text-2xl font-black text-foreground">Let's Keep You Safe</h2>
       </div>
       
       <div className="relative py-4 pb-20">

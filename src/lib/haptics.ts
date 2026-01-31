@@ -1,19 +1,19 @@
 
 export const hapticLight = () => {
   if (navigator.vibrate) {
-    navigator.vibrate(10); // Short, crisp vibration
+    navigator.vibrate(25); // Stronger tick
   }
 };
 
 export const hapticMedium = () => {
     if (navigator.vibrate) {
-      navigator.vibrate(20);
+      navigator.vibrate(40);
     }
 };
 
 export const hapticHeavy = () => {
     if (navigator.vibrate) {
-      navigator.vibrate(40);
+      navigator.vibrate(60);
     }
 };
 

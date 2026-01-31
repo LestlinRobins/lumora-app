@@ -18,6 +18,7 @@ interface TrustedPerson {
   role: string;
   icon: React.ElementType;
   color: string;
+  shadowColor: string;
   phone?: string;
 }
 
@@ -48,10 +49,11 @@ export default function Profile() {
       role: "Guardian", 
       icon: Phone, 
       color: "hsl(265 75% 60%)",
+      shadowColor: "hsl(265 75% 40%)",
       phone: userData.guardianPhone 
     }] : []),
-    { id: 1, name: "Mom", role: "Parent", icon: Users, color: "hsl(340 85% 70%)" },
-    { id: 2, name: "Mr. Johnson", role: "Teacher", icon: Users, color: "hsl(210 90% 60%)" },
+    { id: 1, name: "Mom", role: "Parent", icon: Users, color: "hsl(340 85% 70%)", shadowColor: "hsl(340 85% 50%)" },
+    { id: 2, name: "Mr. Johnson", role: "Teacher", icon: Users, color: "hsl(210 90% 60%)", shadowColor: "hsl(210 90% 40%)" },
   ];
 
   const handleTabChange = (tab: TabId) => {
@@ -90,54 +92,54 @@ export default function Profile() {
         </div>
 
         {/* Profile Card */}
-        <div className="bg-card rounded-3xl p-6 mb-6 border-2 border-border relative overflow-hidden"
-          style={{ boxShadow: "0 4px 20px rgba(0,0,0,0.06)" }}>
+        <div className="bg-primary rounded-3xl p-6 mb-6 border-2 border-primary relative overflow-hidden text-primary-foreground"
+          style={{ boxShadow: "0 6px 0 hsl(265 75% 40%)" }}>
           
           {/* Accent shape */}
-          <div className="absolute -right-8 -top-8 w-40 h-40 bg-primary/10 rounded-full" />
+          <div className="absolute -right-8 -top-8 w-40 h-40 bg-white/10 rounded-full" />
           
           <div className="relative flex items-center gap-4 mb-6">
             {/* Avatar */}
             <div className="relative">
-              <div className="w-20 h-20 bg-primary rounded-2xl flex items-center justify-center overflow-hidden"
-                style={{ boxShadow: "0 6px 16px hsl(265 75% 60% / 0.25)" }}>
+              <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center overflow-hidden"
+                style={{ boxShadow: "0 6px 16px rgba(0,0,0,0.2)" }}>
                 {userData?.avatar ? (
                   <img src={userData.avatar} alt="Profile" className="w-full h-full object-cover" />
                 ) : (
-                  <Shield className="w-10 h-10 text-primary-foreground" strokeWidth={2.5} />
+                  <Shield className="w-10 h-10 text-primary" strokeWidth={2.5} />
                 )}
               </div>
               {/* Level badge */}
-              <div className="absolute -bottom-1.5 -right-1.5 w-7 h-7 bg-accent rounded-lg flex items-center justify-center border-2 border-card"
-                style={{ boxShadow: "0 2px 8px hsl(185 85% 55% / 0.3)" }}>
+              <div className="absolute -bottom-1.5 -right-1.5 w-7 h-7 bg-accent rounded-lg flex items-center justify-center border-2 border-primary"
+                style={{ boxShadow: "0 2px 8px rgba(0,0,0,0.2)" }}>
                 <span className="text-xs font-black text-accent-foreground">{level}</span>
               </div>
             </div>
 
             <div className="flex-1">
-              <h2 className="text-xl font-extrabold text-foreground mb-1">
+              <h2 className="text-xl font-extrabold text-white mb-1">
                 {userData?.name || "SafetyHero"}
               </h2>
-              <p className="text-sm text-muted-foreground font-semibold">Level {level} Guardian</p>
+              <p className="text-sm text-primary-foreground/80 font-semibold">Level {level} Guardian</p>
             </div>
           </div>
 
           {/* Progress Section */}
           <div className="relative">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-bold text-foreground uppercase tracking-wider">Progress to Level {level + 1}</span>
-              <span className="text-xs font-bold text-primary">{progressPoints} / {nextLevelPoints}</span>
+              <span className="text-xs font-bold text-primary-foreground/90 uppercase tracking-wider">Progress to Level {level + 1}</span>
+              <span className="text-xs font-bold text-white">{progressPoints} / {nextLevelPoints}</span>
             </div>
             
             {/* Progress bar */}
-            <div className="h-2 bg-muted rounded-full overflow-hidden">
+            <div className="h-2 bg-black/20 rounded-full overflow-hidden">
               <div 
-                className="h-full bg-primary rounded-full transition-all duration-700"
+                className="h-full bg-white rounded-full transition-all duration-700"
                 style={{ width: `${progressPercentage}%` }}
               />
             </div>
             
-            <p className="text-[11px] text-muted-foreground font-semibold mt-2">
+            <p className="text-[11px] text-primary-foreground/70 font-semibold mt-2">
               {nextLevelPoints - progressPoints} points to next level
             </p>
           </div>
@@ -158,19 +160,19 @@ export default function Profile() {
               return (
                 <div key={achievement.id} className="flex flex-col items-center gap-2">
                   <div
-                    className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-300 ${
+                    className={`w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 ${
                       achievement.earned 
-                        ? 'bg-card border-2' 
+                        ? 'border-2 border-black/5' 
                         : 'bg-muted border-2 border-transparent opacity-40'
                     }`}
                     style={{
-                      borderColor: achievement.earned ? achievement.color : 'transparent',
-                      boxShadow: achievement.earned ? `0 4px 12px ${achievement.color}40` : 'none',
+                      backgroundColor: achievement.earned ? achievement.color : undefined,
+                      boxShadow: achievement.earned ? '0 4px 0 rgba(0,0,0,0.15)' : 'none',
                     }}
                   >
                     <Icon 
                       className="w-6 h-6" 
-                      style={{ color: achievement.earned ? achievement.color : 'hsl(var(--muted-foreground))' }}
+                      style={{ color: achievement.earned ? '#ffffff' : 'hsl(var(--muted-foreground))' }}
                       strokeWidth={2.5}
                     />
                   </div>
@@ -198,25 +200,27 @@ export default function Profile() {
               return (
                 <div
                   key={guardian.id}
-                  className="bg-card rounded-2xl p-4 border-2 border-border flex items-center gap-3"
-                  style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.04)" }}
+                  className="rounded-full p-2 pr-5 border-2 border-transparent flex items-center gap-3 transition-transform active:translate-y-1"
+                  style={{ 
+                    backgroundColor: guardian.color,
+                    boxShadow: `0 5px 0 ${guardian.shadowColor}`
+                  }}
                 >
                   <div 
-                    className="w-12 h-12 rounded-xl flex items-center justify-center"
-                    style={{ backgroundColor: guardian.color }}
+                    className="w-12 h-12 rounded-full flex items-center justify-center bg-white"
                   >
-                    <Icon className="w-6 h-6 text-white" strokeWidth={2.5} />
+                    <Icon className="w-6 h-6" style={{ color: guardian.color }} strokeWidth={2.5} />
                   </div>
 
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-extrabold text-foreground truncate">{guardian.name}</p>
-                    <p className="text-xs text-muted-foreground font-semibold">
+                    <p className="text-sm font-extrabold text-white truncate">{guardian.name}</p>
+                    <p className="text-xs text-white/90 font-semibold">
                       {guardian.role} {guardian.phone && `• ${guardian.phone}`}
                     </p>
                   </div>
 
-                  <div className="w-8 h-8 bg-success/10 rounded-lg flex items-center justify-center">
-                    <Shield className="w-4 h-4 text-success" strokeWidth={2.5} />
+                  <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                    <Shield className="w-4 h-4 text-white" strokeWidth={2.5} />
                   </div>
                 </div>
               );
@@ -225,9 +229,10 @@ export default function Profile() {
             {/* Add button */}
             <button
               onClick={() => console.log('Add trusted person')}
-              className="w-full bg-secondary/10 rounded-2xl p-4 border-2 border-dashed border-secondary/40 flex items-center justify-center gap-2.5 transition-all hover:bg-secondary/15 active:scale-[0.98]"
+              className="w-full bg-secondary/10 rounded-full p-2 pr-5 border-2 border-dashed border-secondary/40 flex items-center justify-center gap-2.5 transition-all hover:bg-secondary/15 active:translate-y-1 py-3"
+              style={{ boxShadow: "0 5px 0 rgba(0,0,0,0.05)" }}
             >
-              <div className="w-9 h-9 bg-secondary/20 rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-secondary/20 rounded-full flex items-center justify-center">
                 <Plus className="w-5 h-5 text-secondary" strokeWidth={2.5} />
               </div>
               <span className="text-sm font-bold text-secondary">Add Trusted Person</span>
@@ -238,11 +243,11 @@ export default function Profile() {
         {/* Settings */}
         <button
           onClick={() => console.log('Settings')}
-          className="w-full bg-card rounded-2xl px-4 py-4 border-2 border-border flex items-center justify-between transition-all hover:bg-muted active:scale-[0.99]"
-          style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.04)" }}
+          className="w-full bg-card rounded-full p-2 pr-5 border-2 border-border flex items-center justify-between transition-all hover:bg-muted active:translate-y-1"
+          style={{ boxShadow: "0 5px 0 rgba(0,0,0,0.1)" }}
         >
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-muted rounded-xl flex items-center justify-center">
+            <div className="w-10 h-10 bg-muted rounded-full flex items-center justify-center">
               <Settings className="w-5 h-5 text-muted-foreground" strokeWidth={2.5} />
             </div>
             <span className="text-sm font-bold text-foreground">Settings & Preferences</span>

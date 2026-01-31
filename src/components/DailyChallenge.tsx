@@ -51,20 +51,8 @@ export function DailyChallenge() {
 
 export function RewardBadge() {
   return (
-    <div className="mx-5 mt-4 flex items-center gap-3 bg-warm/15 p-4 rounded-2xl border-2 border-warm/30 slide-up">
-      <div className="w-12 h-12 bg-warm rounded-full flex items-center justify-center relative"
-        style={{ boxShadow: 'var(--shadow-warm)' }}>
-        <Award className="w-6 h-6 text-warm-foreground" strokeWidth={2.5} />
-        <div className="absolute inset-0 bg-white/20 rounded-full" />
-      </div>
-      <div className="flex-1">
-        <p className="text-base font-extrabold text-foreground">You're doing amazing!</p>
-        <p className="text-sm text-muted-foreground font-semibold">Keep learning to unlock new badges</p>
-      </div>
-      <div className="flex flex-col items-center gap-1">
-        <span className="text-3xl rotate-bounce" style={{ display: 'inline-block' }}>🌟</span>
-        <span className="text-xs font-bold text-accent-foreground bg-accent px-2 py-0.5 rounded-full">+5 XP</span>
-      </div>
+    <div className="">
+      
     </div>
   );
 }
