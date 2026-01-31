@@ -166,79 +166,77 @@ export function ActionCardList() {
   const tips: TipNode[] = [
     {
       id: 1,
-      title: "You Can Say No",
+      title: "If Someone Offers You Something",
       icon: <Shield className="w-9 h-9" strokeWidth={2.5} />,
       color: "bg-blue-500",
-      shadowColor: "#2563eb", 
+      shadowColor: "#2563eb",
       position: "center",
       content: {
         type: "examples",
-        title: "You Can Say No",
-        text: "You don’t have to say yes to anything that makes you uncomfortable.",
-        examples: ["No, I don't want to play.", "Stop, I don't like that."]
+        title: "If Someone Offers You Something",
+        text: "You don’t have to take anything you don’t recognize or feel unsure about.",
+        examples: ["No thank you, I don’t want that.", "I need to ask my grown-up first."],
+        illustration: "/illustrations/say no.svg"
       }
     },
     {
       id: 2,
-      title: "Leaving Is Always Okay",
-      icon: <DoorOpen className="w-9 h-9" strokeWidth={2.5} />,
+      title: "Pressure Is Not Okay",
+      icon: <Hand className="w-9 h-9" strokeWidth={2.5} />,
       color: "bg-orange-500",
       shadowColor: "#ea580c",
       position: "left",
       content: {
-        type: "simple",
-        title: "Leaving Is Always Okay",
-        text: "If something feels wrong, you can leave.",
-        illustration: "run" 
+        type: "examples",
+        title: "Pressure Is Not Okay",
+        text: "If someone keeps asking or pushing you, it’s okay to say no and step away.",
+        examples: ["Please stop asking me.", "I don’t want to do this."],
+        illustration: "/illustrations/say no.svg"
       }
     },
     {
       id: 3,
-      title: "Tell a Safe Grown-Up",
-      icon: <Users className="w-9 h-9" strokeWidth={2.5} />,
-      color: "bg-green-500",
-      shadowColor: "#16a34a",
+      title: "Secrets That Feel Wrong",
+      icon: <Lock className="w-9 h-9" strokeWidth={2.5} />,
+      color: "bg-indigo-500",
+      shadowColor: "#4f46e5",
       position: "right",
       content: {
-        type: "icons",
-        title: "Tell a Safe Grown-Up",
-        text: "Talking to someone you trust can help.",
-        icons: [
-          { icon: <Users size={32} />, label: "Parent" },
-          { icon: <BookOpen size={32} />, label: "Teacher" },
-          { icon: <Heart size={32} />, label: "Counselor" }
-        ]
+        type: "examples",
+        title: "Secrets That Feel Wrong",
+        text: "You should never keep a secret that makes you feel scared or uncomfortable.",
+        examples: ["I need to tell someone about this.", "This doesn’t feel okay to keep secret."],
+        illustration: "/illustrations/what are drugs.svg"
       }
     },
     {
       id: 4,
-      title: "Bad Secrets Aren’t Okay",
-      icon: <Lock className="w-9 h-9" strokeWidth={2.5} />,
-      color: "bg-indigo-500",
-      shadowColor: "#4f46e5",
+      title: "You Can Walk Away",
+      icon: <DoorOpen className="w-9 h-9" strokeWidth={2.5} />,
+      color: "bg-green-500",
+      shadowColor: "#16a34a",
       position: "center",
       content: {
-        type: "contrast",
-        title: "Bad Secrets Aren’t Okay",
-        text: "This is one of the most important safety concepts.",
-        contrastExamples: [
-          { label: "Surprise gift", ok: true },
-          { label: "“Don’t tell or else…”", ok: false }
-        ]
+        type: "examples",
+        title: "You Can Walk Away",
+        text: "Leaving a situation is always a safe choice when something feels wrong.",
+        examples: ["I’m going to go now.", "I don’t want to stay here."],
+        illustration: "/illustrations/safe places.svg"
       }
     },
     {
       id: 5,
-      title: "Your Feelings Matter",
-      icon: <Heart className="w-9 h-9" strokeWidth={2.5} />,
+      title: "Ask a Safe Grown-Up",
+      icon: <Users className="w-9 h-9" strokeWidth={2.5} />,
       color: "bg-yellow-400",
       shadowColor: "#ca8a04",
       position: "left",
       content: {
-        type: "feelings",
-        title: "Your Feelings Matter",
-        text: "Thanks for checking in.",
-        subText: "No advice. Just validation."
+        type: "examples",
+        title: "Ask a Safe Grown-Up",
+        text: "Talking to a trusted adult can help keep you safe.",
+        examples: ["Can I talk to you about something?", "Something happened that made me uncomfortable."],
+        illustration: "/illustrations/safe places.svg"
       }
     },
     {
@@ -249,36 +247,26 @@ export function ActionCardList() {
       shadowColor: "#db2777",
       position: "right",
       content: {
-        type: "simple",
+        type: "examples",
         title: "You’re Not in Trouble",
-        text: "Even if something already happened, you can still ask for help."
+        text: "Even if you’re confused or already said yes, you can still ask for help.",
+        examples: ["I didn’t know what to do.", "I need help with something."],
+        illustration: "/illustrations/feelings.svg"
       }
     },
     {
       id: 7,
-      title: "You Don’t Need a Reason",
-      icon: <MessageCircle className="w-9 h-9" strokeWidth={2.5} />,
+      title: "Trust How You Feel",
+      icon: <Heart className="w-9 h-9" strokeWidth={2.5} />,
       color: "bg-teal-500",
       shadowColor: "#0d9488",
       position: "center",
       content: {
         type: "examples",
-        title: "You Don’t Need a Reason",
-        text: "This builds confidence without confrontation.",
-        examples: ["No is enough.", "You don’t have to explain."]
-      }
-    },
-    {
-      id: 8,
-      title: "You’re Not Alone",
-      icon: <Feather className="w-9 h-9" strokeWidth={2.5} />,
-      color: "bg-sky-500",
-      shadowColor: "#0284c7",
-      position: "center",
-      content: {
-        type: "mascot",
-        title: "You’re Not Alone",
-        text: "I’m here with you."
+        title: "Trust How You Feel",
+        text: "If your body or feelings say something is wrong, it’s okay to listen to that.",
+        examples: ["I don’t feel comfortable.", "I want to stop."],
+        illustration: "/illustrations/feelings.svg"
       }
     }
   ];
@@ -352,7 +340,7 @@ export function ActionCardList() {
   return (
     <div className="px-5 relative">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-extrabold text-foreground">Safety Tips</h2>
+        <h2 className="text-2xl font-black text-foreground">Care</h2>
       </div>
       
       <div className="relative py-4 pb-20">
@@ -394,12 +382,22 @@ export function ActionCardList() {
           {/* Tip Content */}
           <div className={`w-full h-full flex flex-col items-center justify-start p-6 pt-20 pb-8 overflow-y-auto transition-opacity duration-300 ${showCelebration ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
             <div className="w-full max-w-md flex flex-col items-center text-center gap-6">
-              {/* Big Icon */}
-              <div className={`w-32 h-32 shrink-0 rounded-full flex items-center justify-center ${activeTip.color} text-white shadow-2xl bounce-in`}>
-                <div style={{ transform: 'scale(1.5)' }}>
-                  {activeTip.icon}
+              {/* Big Icon or Illustration */}
+              {activeTip.content.illustration ? (
+                 <div className="w-full max-w-xs h-40 bg-muted/20 rounded-3xl flex items-center justify-center overflow-hidden mb-2 shadow-sm">
+                    <img 
+                      src={activeTip.content.illustration} 
+                      alt={activeTip.title}
+                      className="w-full h-full object-contain p-2"
+                    />
+                 </div>
+              ) : (
+                <div className={`w-32 h-32 shrink-0 rounded-full flex items-center justify-center ${activeTip.color} text-white shadow-2xl bounce-in`}>
+                  <div style={{ transform: 'scale(1.5)' }}>
+                    {activeTip.icon}
+                  </div>
                 </div>
-              </div>
+              )}
               
               <div className="space-y-4">
                 <h3 className="text-3xl font-black text-foreground tracking-tight leading-tight">{activeTip.content.title}</h3>

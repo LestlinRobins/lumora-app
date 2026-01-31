@@ -28,3 +28,13 @@ export const hapticSuccess = () => {
       navigator.vibrate([10, 30, 10]);
     }
 };
+
+export const hapticBuilding = () => {
+    if (navigator.vibrate) {
+        const pattern = [
+            25, 250, 30, 220, 35, 200, 40, 180, 45, 160, 50, 140, 55, 120, 60, 100,
+            65, 90, 70, 80, 75, 70, 300, 120,
+        ];
+        navigator.vibrate(pattern);
+    }
+};

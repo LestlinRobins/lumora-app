@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowLeft, Loader2, Check } from "lucide-react";
 import Lottie from "lottie-react";
-import { hapticLight, hapticMedium, hapticError } from "@/lib/haptics";
+import { hapticLight, hapticMedium, hapticError, hapticBuilding } from "@/lib/haptics";
 import celebrationAnimation from "../../public/animations/Celebration balloon confetti animation.json";
 import logoAnimation from "../../public/animations/logo animation.json";
 import { useNavigate } from "react-router-dom";
@@ -110,6 +110,7 @@ export default function Onboarding() {
       localStorage.setItem("lumora_user_data", JSON.stringify(formData));
       setIsSubmitting(false);
       setStep(step + 1); // Move to success screen
+      hapticBuilding();
     }, 1500);
   };
 
@@ -160,7 +161,7 @@ export default function Onboarding() {
             setErrors({ ...errors, name: "" });
           }}
           placeholder="Your Hero Name"
-          className="h-14 text-lg rounded-2xl bg-white border-2 border-border focus:border-primary px-6 shadow-sm mb-2 text-center font-bold text-primary"
+          className="h-14 text-lg rounded-2xl bg-primary/5 border-2 border-primary/20 focus:border-primary px-6 shadow-sm mb-2 text-center font-bold text-primary placeholder:text-muted-foreground/50 placeholder:font-normal"
           autoFocus
         />
         {errors.name && (

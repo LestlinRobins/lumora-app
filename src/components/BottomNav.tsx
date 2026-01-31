@@ -12,7 +12,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   { id: "nest", label: "Nest", icon: Home },
   { id: "chatbot", label: "Chat", icon: MessageCircle },
-  { id: "tips", label: "Tips", icon: Carrot },
+  { id: "tips", label: "Care", icon: Carrot },
   { id: "profile", label: "Us", icon: Users },
 ];
 

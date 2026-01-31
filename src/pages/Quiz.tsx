@@ -12,6 +12,7 @@ import sadStarAnimation from "@/animations/Sad Star.json";
 import cryingEmojiAnimation from "@/animations/Crying emoji.json";
 import { addCarrots } from "@/lib/carrots";
 import { setPendingCarrotReward } from "@/components/FlyingCarrots";
+import { motion } from "motion/react";
 
 interface QuizQuestion {
   id: number;
@@ -32,14 +33,14 @@ const quizData: Record<number, QuizQuestion> = {
   },
   2: {
     id: 2,
-    illustration: "/illustrations/cloud.png",
+    illustration: "/illustrations/what are drugs.svg",
     question: "What are drugs?",
     options: ["Only medicine from a doctor", "Substances that change how your body works", "Vitamins", "Food"],
     correctAnswer: 1
   },
   3: {
     id: 3,
-    illustration: "/illustrations/cloud1.png",
+    illustration: "/illustrations/say no.svg",
     question: "If someone offers you something that makes you uncomfortable, what should you do?",
     options: ["Say 'No' firmly and walk away", "Accept it to be polite", "Keep it a secret", "Try it first"],
     correctAnswer: 0
@@ -53,14 +54,14 @@ const quizData: Record<number, QuizQuestion> = {
   },
   5: {
     id: 5,
-    illustration: "/illustrations/cloud.png",
+    illustration: "/illustrations/feelings.svg",
     question: "If you feel scared or uncomfortable, what should you do?",
     options: ["Keep it to yourself", "Tell a trusted adult right away", "Hide and wait", "Ignore the feeling"],
     correctAnswer: 1
   },
   6: {
     id: 6,
-    illustration: "/illustrations/cloud1.png",
+    illustration: "/illustrations/safe places.svg",
     question: "Where is a safe place?",
     options: ["Anywhere with toys", "Places with trusted adults who care for you", "Any public place", "Anywhere with strangers"],
     correctAnswer: 1
@@ -74,14 +75,14 @@ const quizData: Record<number, QuizQuestion> = {
   },
   8: {
     id: 8,
-    illustration: "/illustrations/cloud.png",
+    illustration: "/illustrations/what are drugs.svg", // Reusing relevant illustration or default
     question: "What's the difference between good and bad secrets?",
     options: ["Good secrets are surprises that make people happy, bad secrets make you feel uncomfortable", "All secrets are good", "Bad secrets are birthday surprises", "There's no difference"],
     correctAnswer: 0
   },
   9: {
     id: 9,
-    illustration: "/illustrations/cloud1.png",
+    illustration: "/illustrations/say no.svg",
     question: "What would you do if a friend asks you to try something unsafe?",
     options: ["Do it to keep them as a friend", "Say 'No' and tell a trusted adult", "Keep it secret", "Try it just once"],
     correctAnswer: 1
@@ -95,14 +96,14 @@ const quizData: Record<number, QuizQuestion> = {
   },
   11: {
     id: 11,
-    illustration: "/illustrations/cloud.png",
+    illustration: "/illustrations/feelings.svg",
     question: "What does 'listen to your body' mean?",
     options: ["Only listen when you're hungry", "Pay attention to feelings of discomfort or fear", "Ignore strange feelings", "Only listen to others"],
     correctAnswer: 1
   },
   12: {
     id: 12,
-    illustration: "/illustrations/cloud1.png",
+    illustration: "/illustrations/say no.svg",
     question: "What should you do when friends pressure you to do something wrong?",
     options: ["Go along with it", "Stand firm and say 'No,' real friends will respect you", "Do it to fit in", "Keep it secret"],
     correctAnswer: 1
@@ -270,20 +271,25 @@ export default function Quiz() {
       <main className="flex-1 pt-20 pb-8 px-5">
         <div className="max-w-lg mx-auto">
           {/* Illustration */}
-          <div className="mb-8 flex justify-center">
-            <div 
-              className="w-full max-w-xs h-48 bg-muted rounded-3xl flex items-center justify-center overflow-hidden"
-              style={{ boxShadow: 'var(--shadow-card)' }}
-            >
-              <img 
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
+            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+            transition={{ duration: 0.5 }}
+            className="mb-8 mt-10 flex justify-center"
+          >
+             <img 
                 src={quiz.illustration} 
                 alt="Quiz illustration" 
-                className="w-full h-full object-contain p-4"
+                className="w-full max-w-xs h-48 object-contain"
               />
-            </div>
-          </div>
+          </motion.div>
 
           {/* Question */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
           <Card className="p-6 mb-6" style={{ boxShadow: 'var(--shadow-card)' }}>
             <h2 className="text-xl font-bold text-foreground mb-6">
               {quiz.question}
@@ -292,8 +298,13 @@ export default function Quiz() {
             {/* Options */}
             <div className="space-y-3">
               {quiz.options.map((option, index) => (
-                <button
+                <motion.div
                   key={index}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.4, delay: 0.4 + (index * 0.1) }}
+                >
+                <button
                   onClick={() => !showResult && setSelectedOption(index)}
                   disabled={showResult}
                   className={`
@@ -333,11 +344,18 @@ export default function Quiz() {
                     )}
                   </div>
                 </button>
+                </motion.div>
               ))}
             </div>
           </Card>
+          </motion.div>
 
           {/* Submit/Retry Button */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.8 }}
+          >
           {!showResult ? (
             <Button
               onClick={handleSubmit}
@@ -370,6 +388,7 @@ export default function Quiz() {
               </div>
             </Card>
           )}
+          </motion.div>
         </div>
       </main>
     </div>

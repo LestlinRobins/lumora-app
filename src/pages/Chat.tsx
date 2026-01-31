@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { BottomNav, TabId } from "@/components/BottomNav";
+import { Header } from "@/components/Header";
 import { ArrowLeft, Mic, MicOff, Volume2, Send } from "lucide-react";
 import { toast } from "sonner";
 
@@ -255,20 +256,8 @@ export default function Chat() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-sm border-b border-border px-5 py-4">
-        <div className="flex items-center justify-between max-w-lg mx-auto">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => navigate("/")}
-            className="rounded-full w-10 h-10"
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </Button>
-          <h1 className="text-lg font-extrabold text-foreground">Chat Helper</h1>
-          <div className="w-10" /> {/* Spacer for alignment */}
-        </div>
-      </header>
+      {/* Header */}
+      <Header />
 
       {/* White mask layer between video and chat (prevents chat from showing behind video) */}
       <div
@@ -325,10 +314,10 @@ export default function Chat() {
               <div className="flex items-center justify-center py-10">
                 <div className="text-center">
                   <h2 className="text-xl font-extrabold text-foreground mb-2">
-                    Hello! I'm your helper! 👋
+                    Hi there! Want to talk or type? 
                   </h2>
                   <p className="text-sm text-muted-foreground font-semibold">
-                    You can type or speak to me
+                    I’m listening!
                   </p>
                 </div>
               </div>
