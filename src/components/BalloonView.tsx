@@ -1,9 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Shield, Users, Heart, BookOpen, Star, Brain, Lock, CheckCircle2, Play, RotateCcw } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
+import { Shield, Users, Heart, BookOpen, Star, Brain, Lock, Play } from "lucide-react";
 
 interface LessonBalloon {
   id: number;
@@ -21,6 +19,7 @@ interface LessonBalloon {
 interface BalloonProps extends LessonBalloon {
   onClick?: () => void;
   className?: string;
+  isNextBalloon?: boolean;
 }
 
 function Balloon({ 
@@ -34,7 +33,8 @@ function Balloon({
   bottomPosition,
   leftPosition,
   onClick,
-  className
+  className,
+  isNextBalloon
 }: BalloonProps) {
   const [isPressed, setIsPressed] = useState(false);
 
@@ -48,6 +48,20 @@ function Balloon({
         transform: 'translateX(-50%)'
       }}
     >
+      {/* Purple halo for next balloon */}
+      {isNextBalloon && (
+        <div 
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0"
+          style={{
+            width: '140px',
+            height: '160px',
+            background: 'radial-gradient(ellipse, rgba(147, 51, 234, 0.4) 0%, rgba(147, 51, 234, 0.2) 40%, transparent 70%)',
+            borderRadius: '50%',
+            animation: 'pulse-halo 2s ease-in-out infinite',
+          }}
+        />
+      )}
+      
       {/* String - Curly dangling "floating" string attached to knot */}
       <svg
         className="absolute top-[90%] left-1/2 -translate-x-1/2 overflow-visible"
@@ -71,40 +85,51 @@ function Balloon({
 
       {/* Balloon Shape */}
       <button
-        onClick={isUnlocked ? onClick : undefined}
-        onMouseDown={() => isUnlocked && setIsPressed(true)}
+        onClick={isUnlocked && !isCompleted ? onClick : undefined}
+        onMouseDown={() => isUnlocked && !isCompleted && setIsPressed(true)}
         onMouseUp={() => setIsPressed(false)}
         onMouseLeave={() => setIsPressed(false)}
-        onTouchStart={() => isUnlocked && setIsPressed(true)}
+        onTouchStart={() => isUnlocked && !isCompleted && setIsPressed(true)}
         onTouchEnd={() => setIsPressed(false)}
-        disabled={!isUnlocked}
+        disabled={!isUnlocked || isCompleted}
         className={`
-          relative transition-all duration-200 group flex flex-col items-center
-          ${isUnlocked ? 'cursor-pointer' : 'cursor-not-allowed opacity-60'}
+          relative transition-all duration-500 group flex flex-col items-center
+          ${isUnlocked && !isCompleted ? 'cursor-pointer' : 'cursor-not-allowed'}
+          ${isCompleted ? 'opacity-70' : !isUnlocked ? 'opacity-60' : ''}
         `}
       >
-        <div className="relative">
-          {/* Main Balloon Body (Oval) */}
+        <div className={`relative transition-transform duration-500 ${isCompleted ? 'scale-75' : ''}`}>
+          {/* Main Balloon Body (Oval) - Deflated when completed */}
           <div 
             className={`
-              w-[5.5rem] h-[6.5rem] flex items-center justify-center relative z-20
-              transition-all duration-200
-              ${isUnlocked ? color : 'bg-muted'}
-              ${isCompleted ? 'ring-4 ring-success/30' : ''}
+              flex items-center justify-center relative z-20
+              transition-all duration-500
+              ${isCompleted ? 'bg-gray-400' : isUnlocked ? color : 'bg-muted'}
             `}
             style={{
-              borderRadius: '50% 50% 50% 50% / 45% 45% 55% 55%', // Balloon shape
-              boxShadow: isPressed && isUnlocked
-                ? `0 2px 0 0 ${shadowColor}`
-                : isUnlocked 
-                  ? `0 6px 0 0 ${shadowColor}`
-                  : 'none',
-              transform: isPressed && isUnlocked ? 'translateY(4px) scale(0.98)' : 'translateY(0)',
+              width: isCompleted ? '4.5rem' : '5.5rem',
+              height: isCompleted ? '5rem' : '6.5rem',
+              borderRadius: isCompleted 
+                ? '45% 45% 50% 50% / 40% 40% 60% 60%' // More deflated shape
+                : '50% 50% 50% 50% / 45% 45% 55% 55%', // Normal balloon shape
+              boxShadow: isCompleted
+                ? '0 3px 0 0 hsl(0, 0%, 50%)'
+                : isPressed && isUnlocked
+                  ? `0 2px 0 0 ${shadowColor}`
+                  : isUnlocked 
+                    ? `0 6px 0 0 ${shadowColor}`
+                    : 'none',
+              transform: isPressed && isUnlocked && !isCompleted ? 'translateY(4px) scale(0.98)' : 'translateY(0)',
             }}
           >
-            {/* Icon - Centered in the upper part mainly */}
+            {/* Icon - Star for completed, normal icon otherwise */}
             <div className="pb-2">
-              {isUnlocked ? (
+              {isCompleted ? (
+                <Star 
+                  className="w-8 h-8 text-yellow-400 fill-yellow-400 animate-bounce-star"
+                  strokeWidth={2} 
+                />
+              ) : isUnlocked ? (
                 <Icon 
                   className="w-10 h-10 text-white"
                   strokeWidth={2.5} 
@@ -114,11 +139,20 @@ function Balloon({
               )}
             </div>
             
-            {/* Shine effect */}
+            {/* Shine effect - dimmer when completed */}
             {isUnlocked && (
               <div 
-                className="absolute top-3 left-4 w-6 h-10 bg-white/20 rounded-full -rotate-12 blur-[1px]" 
+                className={`absolute top-3 left-4 w-6 h-10 rounded-full -rotate-12 blur-[1px] transition-opacity duration-500 ${isCompleted ? 'bg-white/10' : 'bg-white/20'}`}
               />
+            )}
+            
+            {/* Wrinkle lines for deflated balloon */}
+            {isCompleted && (
+              <>
+                <div className="absolute top-6 left-3 w-3 h-[1px] bg-gray-500/30 rotate-[-20deg]" />
+                <div className="absolute top-10 right-4 w-4 h-[1px] bg-gray-500/30 rotate-[15deg]" />
+                <div className="absolute bottom-8 left-5 w-3 h-[1px] bg-gray-500/30 rotate-[-10deg]" />
+              </>
             )}
           </div>
 
@@ -126,20 +160,20 @@ function Balloon({
           <div 
             className="absolute -bottom-1 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center"
             style={{
-              transform: isPressed && isUnlocked ? 'translate(-50%, 4px)' : 'translate(-50%, 0)',
+              transform: isPressed && isUnlocked && !isCompleted ? 'translate(-50%, 4px)' : 'translate(-50%, 0)',
               transition: 'transform 0.2s'
             }}
           >
              {/* The Knot */}
-             <div className={`w-2 h-2 ${isUnlocked ? color : 'bg-muted'} rounded-full`} />
+             <div className={`w-2 h-2 ${isCompleted ? 'bg-gray-400' : isUnlocked ? color : 'bg-muted'} rounded-full`} />
              {/* The Bow Loops */}
              <div className="relative -mt-1.5 flex">
-                <div className={`w-3 h-3 ${isUnlocked ? color : 'bg-muted'} rounded-full rounded-br-none -rotate-45 -mr-1`} />
-                <div className={`w-3 h-3 ${isUnlocked ? color : 'bg-muted'} rounded-full rounded-bl-none rotate-45 -ml-1`} />
+                <div className={`w-3 h-3 ${isCompleted ? 'bg-gray-400' : isUnlocked ? color : 'bg-muted'} rounded-full rounded-br-none -rotate-45 -mr-1`} />
+                <div className={`w-3 h-3 ${isCompleted ? 'bg-gray-400' : isUnlocked ? color : 'bg-muted'} rounded-full rounded-bl-none rotate-45 -ml-1`} />
              </div>
           </div>
 
-          {/* Side indicator (Play/Done) */}
+          {/* Side indicator (Play) - only for unlocked, not completed */}
           {isUnlocked && !isCompleted && (
             <div className="absolute -right-3 top-1/2 -translate-y-[60%] w-9 h-9 bg-accent rounded-full flex items-center justify-center z-30"
               style={{ 
@@ -148,24 +182,40 @@ function Balloon({
               <Play className="w-4 h-4 text-primary-foreground fill-primary-foreground ml-0.5" strokeWidth={0} />
             </div>
           )}
-
-          {isCompleted && (
-            <div className="absolute -right-3 top-1/2 -translate-y-[60%] w-9 h-9 bg-success rounded-full flex items-center justify-center z-30 scale-bounce"
-              style={{ 
-                boxShadow: '0 3px 0 0 hsl(145, 60%, 35%)' 
-              }}>
-              <CheckCircle2 className="w-5 h-5 text-white" strokeWidth={3} />
-            </div>
-          )}
         </div>
 
         {/* Label below */}
         <div className="text-center mt-4 max-w-[100px] z-30 relative">
-          <p className={`text-xs font-bold ${isUnlocked ? 'text-foreground' : 'text-muted-foreground'}`}>
+          <p className={`text-xs font-bold ${isCompleted ? 'text-gray-500' : isUnlocked ? 'text-foreground' : 'text-muted-foreground'}`}>
             {title}
           </p>
         </div>
       </button>
+      
+      {/* CSS Animation Keyframes */}
+      <style>{`
+        @keyframes pulse-halo {
+          0%, 100% {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+          }
+          50% {
+            transform: translate(-50%, -50%) scale(1.15);
+            opacity: 0.7;
+          }
+        }
+        @keyframes bounce-star {
+          0%, 100% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.1);
+          }
+        }
+        .animate-bounce-star {
+          animation: bounce-star 1.5s ease-in-out infinite;
+        }
+      `}</style>
     </div>
   );
 }
@@ -188,7 +238,7 @@ export function BalloonView() {
   }, []);
 
   const handleBalloonClick = (balloon: LessonBalloon) => {
-    if (balloon.isUnlocked) {
+    if (balloon.isUnlocked && !balloon.isCompleted) {
       navigate("/quiz", { 
         state: { 
           balloonId: balloon.id, 
@@ -196,12 +246,6 @@ export function BalloonView() {
         } 
       });
     }
-  };
-
-  const resetAllProgress = () => {
-    localStorage.removeItem("completedBalloons");
-    setCompletedBalloons([]);
-    toast.success("All progress has been reset! 🔄");
   };
 
   const balloons: LessonBalloon[] = [
@@ -388,19 +432,12 @@ export function BalloonView() {
     },
   ];
 
+  const nextBalloonId = balloons.find(
+    (b) => b.isUnlocked && !completedBalloons.includes(b.id)
+  )?.id;
+
   return (
     <div className="relative w-full px-5" style={{ minHeight: '1900px', paddingBottom: '150px' }}>
-      {/* Reset Progress Button - Fixed at bottom right near balloons */}
-      <Button
-        onClick={resetAllProgress}
-        className="fixed bottom-32 right-5 z-30 rounded-full w-14 h-14 shadow-lg"
-        variant="secondary"
-        size="icon"
-        title="Reset all progress"
-      >
-        <RotateCcw className="w-5 h-5" />
-      </Button>
-
       {/* Sky background - Fixed to cover entire screen */}
       <div 
         className="fixed inset-0 z-0 overflow-hidden"
@@ -425,7 +462,9 @@ export function BalloonView() {
         <Balloon
           key={balloon.id}
           {...balloon}
+          isCompleted={completedBalloons.includes(balloon.id)}
           onClick={() => handleBalloonClick(balloon)}
+          isNextBalloon={balloon.id === nextBalloonId}
           className="z-10"
         />
       ))}
