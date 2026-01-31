@@ -10,7 +10,7 @@ export function Header({
   coins = 50 
 }: HeaderProps) {
   return (
-    <header className="relative pt-4 pb-3 px-5 bg-card border-b-2 border-border">
+    <header className="fixed top-0 left-0 right-0 z-50 pt-4 pb-3 px-5 bg-card border-b-2 border-border">
       <div className="flex items-center justify-between">
         {/* App name on the left */}
         <h1 className="text-xl font-extrabold text-primary tracking-tight">

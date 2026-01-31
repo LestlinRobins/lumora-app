@@ -9,11 +9,11 @@ import { MessageCircle } from "lucide-react";
 
 function NestContent() {
   return (
-    <main className="pb-28 pt-0">
+    <main className="pb-28 pt-20">
       <Header />
       
       {/* Balloon interaction for home */}
-      <div className="mt-6">
+      <div>
         <BalloonView />
       </div>
     </main>
@@ -22,7 +22,7 @@ function NestContent() {
 
 function ChatbotContent() {
   return (
-    <main className="pb-28 pt-0">
+    <main className="pb-28 pt-20">
       <Header />
       <div className="px-5 flex flex-col items-center justify-center min-h-[60vh] mt-12">
         <div className="w-24 h-24 bg-primary rounded-full flex items-center justify-center mb-6 bounce-in"
@@ -40,7 +40,7 @@ function ChatbotContent() {
 
 function SafeTipsContent() {
   return (
-    <main className="pb-28 pt-0">
+    <main className="pb-28 pt-20">
       <Header />
       
       {/* Safe tips roadmap (copy of main roadmap) */}

@@ -14,7 +14,7 @@ export default function Profile() {
 
   return (
     <div className="min-h-screen bg-background" style={{ overflowX: 'hidden' }}>
-      <main className="pb-28 pt-0">
+      <main className="pb-28 pt-20">
         <Header />
         <div className="px-5 mt-8">
           <div className="flex flex-col items-center mb-8">
