@@ -1,36 +1,49 @@
-import { Trophy, Target, Sparkles } from "lucide-react";
+import { Trophy, Target, Sparkles, Award } from "lucide-react";
 
 export function DailyChallenge() {
   return (
     <div 
-      className="mx-5 p-4 rounded-2xl bg-gradient-to-r from-accent/40 to-accent/20 border-2 border-accent/50"
+      className="mx-5 p-5 rounded-[1.75rem] bg-primary/15 border-2 border-primary/30 pop-in relative overflow-hidden"
     >
-      <div className="flex items-center gap-3">
-        <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center shadow-yellow">
-          <Target className="w-6 h-6 text-accent-foreground" strokeWidth={2.5} />
+      {/* Decorative background elements */}
+      <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/15 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 left-0 w-24 h-24 bg-accent/15 rounded-full blur-2xl" />
+      
+      <div className="relative flex items-center gap-4">
+        <div className="w-14 h-14 bg-primary rounded-2xl flex items-center justify-center relative"
+          style={{ boxShadow: 'var(--shadow-button-primary)' }}>
+          <Target className="w-7 h-7 text-primary-foreground" strokeWidth={2.5} />
+          <div className="absolute -top-1 -right-1 scale-bounce">
+            <Sparkles className="w-5 h-5 text-accent fill-accent" />
+          </div>
         </div>
         
         <div className="flex-1">
           <div className="flex items-center gap-2">
-            <span className="text-sm font-bold text-accent-foreground">Daily Goal</span>
-            <Sparkles className="w-4 h-4 text-accent-foreground animate-pulse-soft" />
+            <span className="text-base font-extrabold text-foreground">Today's Goal</span>
+            <div className="pulse-glow">
+              <span className="text-lg">🎯</span>
+            </div>
           </div>
-          <p className="text-xs text-muted-foreground font-medium">
-            Complete 2 activities today
+          <p className="text-sm text-muted-foreground font-semibold mt-0.5">
+            Complete 2 learning activities
           </p>
         </div>
         
         <div className="flex flex-col items-center">
-          <span className="text-2xl font-black text-accent-foreground">1/2</span>
+          <span className="text-3xl font-black text-primary">1/2</span>
         </div>
       </div>
       
       {/* Progress bar */}
-      <div className="mt-3 h-3 bg-card rounded-full overflow-hidden">
+      <div className="relative mt-4 h-3.5 bg-card rounded-full overflow-hidden border-2 border-primary/20">
         <div 
-          className="h-full bg-accent rounded-full transition-all duration-500"
+          className="h-full bg-primary rounded-full transition-all duration-700 relative"
           style={{ width: "50%" }}
-        />
+        >
+          {/* Shine effect on progress bar */}
+          <div className="absolute inset-0 bg-white/20 rounded-full" />
+        </div>
       </div>
     </div>
   );
@@ -38,15 +51,20 @@ export function DailyChallenge() {
 
 export function RewardBadge() {
   return (
-    <div className="mx-5 mt-4 flex items-center gap-3 bg-warm/10 p-3 rounded-xl border border-warm/20">
-      <div className="w-10 h-10 bg-warm/20 rounded-full flex items-center justify-center">
-        <Trophy className="w-5 h-5 text-warm" />
+    <div className="mx-5 mt-4 flex items-center gap-3 bg-warm/15 p-4 rounded-2xl border-2 border-warm/30 slide-up">
+      <div className="w-12 h-12 bg-warm rounded-full flex items-center justify-center relative"
+        style={{ boxShadow: 'var(--shadow-warm)' }}>
+        <Award className="w-6 h-6 text-warm-foreground" strokeWidth={2.5} />
+        <div className="absolute inset-0 bg-white/20 rounded-full" />
       </div>
       <div className="flex-1">
-        <p className="text-sm font-bold text-foreground">You're doing great!</p>
-        <p className="text-xs text-muted-foreground">Keep learning to unlock new badges</p>
+        <p className="text-base font-extrabold text-foreground">You're doing amazing!</p>
+        <p className="text-sm text-muted-foreground font-semibold">Keep learning to unlock new badges</p>
       </div>
-      <span className="text-2xl">🌟</span>
+      <div className="flex flex-col items-center gap-1">
+        <span className="text-3xl rotate-bounce" style={{ display: 'inline-block' }}>🌟</span>
+        <span className="text-xs font-bold text-accent-foreground bg-accent px-2 py-0.5 rounded-full">+5 XP</span>
+      </div>
     </div>
   );
 }

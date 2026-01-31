@@ -1,136 +1,146 @@
 @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Sensei - Playful Children's Safety App Design System
+/* Lumora - Child-Friendly Drug Awareness Education App
    Duolingo-inspired bubbly, bouncy, friendly UI
+   Bluish-Purple Theme for Safety & Trust
    All colors MUST be HSL.
 */
 
 @layer base {
   :root {
-    /* Background - Soft, warm off-white */
-    --background: 45 30% 97%;
-    --foreground: 220 25% 20%;
+    /* Background - Soft lavender gradient base */
+    --background: 250 35% 97%;
+    --foreground: 260 30% 25%;
 
     /* Cards - Pure white with depth */
     --card: 0 0% 100%;
-    --card-foreground: 220 25% 20%;
+    --card-foreground: 260 30% 25%;
 
     /* Popover */
     --popover: 0 0% 100%;
-    --popover-foreground: 220 25% 20%;
+    --popover-foreground: 260 30% 25%;
 
-    /* Primary - Vibrant Green (Duolingo-inspired) */
-    --primary: 145 65% 45%;
+    /* Primary - Vibrant Purple (Main brand color) */
+    --primary: 265 75% 60%;
     --primary-foreground: 0 0% 100%;
 
-    /* Secondary - Friendly Blue */
-    --secondary: 210 85% 55%;
+    /* Secondary - Friendly Sky Blue */
+    --secondary: 210 90% 60%;
     --secondary-foreground: 0 0% 100%;
 
     /* Muted */
-    --muted: 45 20% 92%;
-    --muted-foreground: 220 15% 45%;
+    --muted: 250 25% 94%;
+    --muted-foreground: 260 15% 50%;
 
-    /* Accent - Sunny Yellow */
-    --accent: 45 95% 60%;
-    --accent-foreground: 35 80% 25%;
+    /* Accent - Bright Cyan/Turquoise */
+    --accent: 185 85% 55%;
+    --accent-foreground: 0 0% 100%;
 
-    /* Destructive - Soft Coral (not scary) */
-    --destructive: 15 75% 60%;
+    /* Destructive - Soft Coral (not scary, gentle warning) */
+    --destructive: 15 75% 65%;
     --destructive-foreground: 0 0% 100%;
 
-    /* Warm - Peachy pink for trust/warmth */
-    --warm: 350 80% 65%;
+    /* Warm - Peachy pink for encouragement/warmth */
+    --warm: 340 85% 70%;
     --warm-foreground: 0 0% 100%;
 
+    /* Success - Gentle Green for achievements */
+    --success: 145 60% 55%;
+    --success-foreground: 0 0% 100%;
+
     /* Borders & Inputs */
-    --border: 220 20% 88%;
-    --input: 220 20% 88%;
-    --ring: 145 65% 45%;
+    --border: 250 25% 90%;
+    --input: 250 25% 90%;
+    --ring: 265 75% 60%;
 
     /* Extra-rounded for bubbly feel */
-    --radius: 1.5rem;
+    --radius: 1.75rem;
 
     /* Sidebar */
     --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 220 25% 20%;
-    --sidebar-primary: 145 65% 45%;
+    --sidebar-foreground: 260 30% 25%;
+    --sidebar-primary: 265 75% 60%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 210 85% 55%;
+    --sidebar-accent: 210 90% 60%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 220 20% 88%;
-    --sidebar-ring: 145 65% 45%;
+    --sidebar-border: 250 25% 90%;
+    --sidebar-ring: 265 75% 60%;
 
     /* Chart colors - playful palette */
-    --chart-1: 145 65% 45%;
-    --chart-2: 210 85% 55%;
-    --chart-3: 45 95% 60%;
-    --chart-4: 350 80% 65%;
-    --chart-5: 280 65% 60%;
+    --chart-1: 265 75% 60%;
+    --chart-2: 210 90% 60%;
+    --chart-3: 185 85% 55%;
+    --chart-4: 340 85% 70%;
+    --chart-5: 280 70% 65%;
 
     --sidebar: 0 0% 100%;
 
-    /* Font - Rounded, friendly Nunito */
-    --font-sans: 'Nunito', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    /* Font - Rounded, friendly Fredoka & Nunito */
+    --font-sans: 'Fredoka', 'Nunito', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 
-    /* Playful shadows with color tints */
-    --shadow-card: 0 4px 0 0 hsl(220 20% 82%);
-    --shadow-card-hover: 0 6px 0 0 hsl(220 20% 78%);
-    --shadow-button: 0 4px 0 0 hsl(145 65% 35%);
-    --shadow-button-active: 0 2px 0 0 hsl(145 65% 35%);
-    --shadow-blue: 0 4px 0 0 hsl(210 85% 45%);
-    --shadow-yellow: 0 4px 0 0 hsl(45 95% 45%);
-    --shadow-warm: 0 4px 0 0 hsl(350 80% 55%);
+    /* Playful shadows with color tints - ENHANCED */
+    --shadow-card: 0 6px 0 0 hsl(250 30% 85%);
+    --shadow-card-hover: 0 8px 0 0 hsl(250 30% 80%);
+    --shadow-button-primary: 0 5px 0 0 hsl(265 75% 45%);
+    --shadow-button-primary-active: 0 2px 0 0 hsl(265 75% 45%);
+    --shadow-button-secondary: 0 5px 0 0 hsl(210 90% 45%);
+    --shadow-button-accent: 0 5px 0 0 hsl(185 85% 40%);
+    --shadow-warm: 0 5px 0 0 hsl(340 85% 55%);
+    --shadow-success: 0 5px 0 0 hsl(145 60% 40%);
 
-    /* Animation timing */
-    --bounce-timing: cubic-bezier(0.34, 1.56, 0.64, 1);
+    /* Animation timing - MORE BOUNCY */
+    --bounce-timing: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --super-bounce: cubic-bezier(0.34, 1.8, 0.64, 1);
     --smooth-timing: cubic-bezier(0.4, 0, 0.2, 1);
+    --elastic: cubic-bezier(0.68, -0.6, 0.32, 1.6);
 
     --spacing: 0.25rem;
   }
 
   .dark {
     /* Keep light mode for kids app - dark mode not needed */
-    --background: 45 30% 97%;
-    --foreground: 220 25% 20%;
+    --background: 250 35% 97%;
+    --foreground: 260 30% 25%;
     --card: 0 0% 100%;
-    --card-foreground: 220 25% 20%;
+    --card-foreground: 260 30% 25%;
     --popover: 0 0% 100%;
-    --popover-foreground: 220 25% 20%;
-    --primary: 145 65% 45%;
+    --popover-foreground: 260 30% 25%;
+    --primary: 265 75% 60%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 210 85% 55%;
+    --secondary: 210 90% 60%;
     --secondary-foreground: 0 0% 100%;
-    --muted: 45 20% 92%;
-    --muted-foreground: 220 15% 45%;
-    --accent: 45 95% 60%;
-    --accent-foreground: 35 80% 25%;
-    --destructive: 15 75% 60%;
+    --muted: 250 25% 94%;
+    --muted-foreground: 260 15% 50%;
+    --accent: 185 85% 55%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 15 75% 65%;
     --destructive-foreground: 0 0% 100%;
-    --warm: 350 80% 65%;
+    --warm: 340 85% 70%;
     --warm-foreground: 0 0% 100%;
-    --border: 220 20% 88%;
-    --input: 220 20% 88%;
-    --ring: 145 65% 45%;
+    --border: 250 25% 90%;
+    --input: 250 25% 90%;
+    --ring: 265 75% 60%;
     --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 220 25% 20%;
-    --sidebar-primary: 145 65% 45%;
+    --sidebar-foreground: 260 30% 25%;
+    --sidebar-primary: 265 75% 60%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 210 85% 55%;
+    --sidebar-accent: 210 90% 60%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 220 20% 88%;
-    --sidebar-ring: 145 65% 45%;
-    --chart-1: 145 65% 45%;
-    --chart-2: 210 85% 55%;
-    --chart-3: 45 95% 60%;
-    --chart-4: 350 80% 65%;
-    --chart-5: 280 65% 60%;
+    --sidebar-border: 250 25% 90%;
+    --sidebar-ring: 265 75% 60%;
+    --chart-1: 265 75% 60%;
+    --chart-2: 210 90% 60%;
+    --chart-3: 185 85% 55%;
+    --chart-4: 340 85% 70%;
+    --chart-5: 280 70% 65%;
     --sidebar: 0 0% 100%;
   }
 }
+
 
 @layer base {
   * {
@@ -144,46 +154,55 @@
 }
 
 @layer utilities {
-  /* Bubbly card with 3D press effect */
+  /* Bubbly card with 3D press effect - ENHANCED */
   .card-bubbly {
-    @apply bg-card rounded-[1.5rem] transition-all duration-200;
+    @apply bg-card rounded-[1.75rem] transition-all duration-200;
     box-shadow: var(--shadow-card);
     transform: translateY(0);
   }
 
   .card-bubbly:hover {
     box-shadow: var(--shadow-card-hover);
-    transform: translateY(-2px);
+    transform: translateY(-3px);
   }
 
   .card-bubbly:active {
-    box-shadow: 0 2px 0 0 hsl(220 20% 82%);
-    transform: translateY(2px);
+    box-shadow: 0 2px 0 0 hsl(250 30% 85%);
+    transform: translateY(3px);
   }
 
-  /* Bouncy button styles */
+  /* Bouncy button styles - SUPER BOUNCY */
   .btn-bouncy {
-    @apply transition-all duration-150;
-    transform: translateY(0);
+    @apply transition-all duration-200;
+    transform: translateY(0) scale(1);
+  }
+
+  .btn-bouncy:hover {
+    transform: translateY(-2px) scale(1.05);
   }
 
   .btn-bouncy:active {
-    transform: translateY(2px);
+    transform: translateY(2px) scale(0.98);
   }
 
   /* Tab active state with bounce */
   .tab-bounce {
-    animation: tabBounce 0.4s var(--bounce-timing);
+    animation: tabBounce 0.5s var(--super-bounce);
   }
 
   /* Wiggle animation for attention */
   .wiggle {
-    animation: wiggle 0.5s ease-in-out;
+    animation: wiggle 0.6s ease-in-out;
   }
 
-  /* Float animation for mascot */
+  /* Shake animation for "no" scenarios */
+  .shake {
+    animation: shake 0.5s ease-in-out;
+  }
+
+  /* Float animation for mascot - MORE PRONOUNCED */
   .float {
-    animation: float 3s ease-in-out infinite;
+    animation: float 2.5s ease-in-out infinite;
   }
 
   /* Pulse glow for highlights */
@@ -191,14 +210,29 @@
     animation: pulseGlow 2s ease-in-out infinite;
   }
 
-  /* Pop in animation */
+  /* Pop in animation - SUPER BOUNCY */
   .pop-in {
-    animation: popIn 0.3s var(--bounce-timing);
+    animation: popIn 0.5s var(--super-bounce);
+  }
+
+  /* Bounce in animation */
+  .bounce-in {
+    animation: bounceIn 0.6s var(--elastic);
   }
 
   /* Slide up animation */
   .slide-up {
-    animation: slideUp 0.4s var(--smooth-timing);
+    animation: slideUp 0.5s var(--smooth-timing);
+  }
+
+  /* Scale bounce */
+  .scale-bounce {
+    animation: scaleBounce 0.4s var(--super-bounce);
+  }
+
+  /* Rotate bounce for success */
+  .rotate-bounce {
+    animation: rotateBounce 0.6s var(--elastic);
   }
 }
 
@@ -215,40 +249,87 @@
 
   .nav-pill-active {
     @apply bg-primary/10;
-    animation: tabBounce 0.4s var(--bounce-timing);
+    animation: tabBounce 0.5s var(--super-bounce);
   }
 }
 
-/* Keyframe animations */
+/* Keyframe animations - ENHANCED & MORE BOUNCY */
 @keyframes tabBounce {
   0% { transform: scale(1); }
-  50% { transform: scale(1.15); }
+  30% { transform: scale(1.25); }
+  50% { transform: scale(0.95); }
+  70% { transform: scale(1.1); }
   100% { transform: scale(1); }
 }
 
 @keyframes wiggle {
   0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(-5deg); }
-  75% { transform: rotate(5deg); }
+  10% { transform: rotate(-8deg); }
+  20% { transform: rotate(8deg); }
+  30% { transform: rotate(-8deg); }
+  40% { transform: rotate(8deg); }
+  50% { transform: rotate(-6deg); }
+  60% { transform: rotate(6deg); }
+  70% { transform: rotate(-4deg); }
+  80% { transform: rotate(4deg); }
+  90% { transform: rotate(-2deg); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-8px); }
+  20%, 40%, 60%, 80% { transform: translateX(8px); }
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  25% { transform: translateY(-10px) rotate(2deg); }
+  50% { transform: translateY(-15px) rotate(0deg); }
+  75% { transform: translateY(-10px) rotate(-2deg); }
 }
 
 @keyframes pulseGlow {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
+  0%, 100% { 
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
 }
 
 @keyframes popIn {
   0% { 
     opacity: 0;
-    transform: scale(0.8);
+    transform: scale(0.5) rotate(-5deg);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.15) rotate(2deg);
+  }
+  80% {
+    transform: scale(0.95) rotate(-1deg);
   }
   100% { 
     opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) translateY(-50px);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1) translateY(0);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
     transform: scale(1);
   }
 }
@@ -256,7 +337,7 @@
 @keyframes slideUp {
   0% { 
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(30px);
   }
   100% { 
     opacity: 1;
@@ -264,8 +345,49 @@
   }
 }
 
+@keyframes scaleBounce {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  75% { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+
+@keyframes rotateBounce {
+  0% { 
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    transform: rotate(10deg) scale(1.1);
+  }
+  50% {
+    transform: rotate(-10deg) scale(1.15);
+  }
+  75% {
+    transform: rotate(5deg) scale(1.05);
+  }
+  100% { 
+    transform: rotate(0deg) scale(1);
+  }
+}
+
 /* Stagger animation delays for cards */
 .stagger-1 { animation-delay: 0ms; }
-.stagger-2 { animation-delay: 80ms; }
-.stagger-3 { animation-delay: 160ms; }
-.stagger-4 { animation-delay: 240ms; }
+.stagger-2 { animation-delay: 100ms; }
+.stagger-3 { animation-delay: 200ms; }
+.stagger-4 { animation-delay: 300ms; }
+.stagger-5 { animation-delay: 400ms; }
+.stagger-6 { animation-delay: 500ms; }
+
+/* Gradient backgrounds for visual interest */
+.gradient-purple-blue {
+  background: linear-gradient(135deg, hsl(265 75% 60%) 0%, hsl(210 90% 60%) 100%);
+}
+
+.gradient-blue-cyan {
+  background: linear-gradient(135deg, hsl(210 90% 60%) 0%, hsl(185 85% 55%) 100%);
+}
+
+.gradient-purple-pink {
+  background: linear-gradient(135deg, hsl(265 75% 60%) 0%, hsl(340 85% 70%) 100%);
+}
+
