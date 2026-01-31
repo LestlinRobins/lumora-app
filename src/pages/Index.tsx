@@ -46,6 +46,13 @@ export default function Index() {
   const location = useLocation();
 
   useEffect(() => {
+    const userData = localStorage.getItem("lumora_user_data");
+    if (!userData) {
+      navigate("/onboarding");
+    }
+  }, [navigate]);
+
+  useEffect(() => {
     if (location.state && location.state.tab) {
       setActiveTab(location.state.tab);
       // Optional: clear state to prevent stuck tab on refresh if desired, 

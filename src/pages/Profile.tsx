@@ -1,6 +1,6 @@
 import { BottomNav, TabId } from "@/components/BottomNav";
 import { useNavigate } from "react-router-dom";
-import { Settings, Shield, ChevronRight, Plus, Sparkles, BookOpen, Award, Crown, Target, Users, TrendingUp } from "lucide-react";
+import { Settings, Shield, ChevronRight, Plus, Sparkles, BookOpen, Award, Crown, Target, Users, TrendingUp, Phone } from "lucide-react";
 import { useState } from "react";
 
 interface Achievement {
@@ -18,6 +18,7 @@ interface TrustedPerson {
   role: string;
   icon: React.ElementType;
   color: string;
+  phone?: string;
 }
 
 export default function Profile() {
@@ -25,6 +26,12 @@ export default function Profile() {
   const [level] = useState(3);
   const [progressPoints] = useState(1240);
   const [nextLevelPoints] = useState(1500);
+  
+  const [userData] = useState(() => {
+    const saved = localStorage.getItem("lumora_user_data");
+    const parsed = saved ? JSON.parse(saved) : null;
+    return parsed;
+  });
   
   const achievements: Achievement[] = [
     { id: 1, icon: Sparkles, name: "First Steps", color: "hsl(265 75% 60%)", earned: true, size: 'large' },
@@ -35,6 +42,14 @@ export default function Profile() {
   ];
 
   const guardians: TrustedPerson[] = [
+    ...(userData?.guardianName ? [{ 
+      id: 0, 
+      name: userData.guardianName, 
+      role: "Guardian", 
+      icon: Phone, 
+      color: "hsl(265 75% 60%)",
+      phone: userData.guardianPhone 
+    }] : []),
     { id: 1, name: "Mom", role: "Parent", icon: Users, color: "hsl(340 85% 70%)" },
     { id: 2, name: "Mr. Johnson", role: "Teacher", icon: Users, color: "hsl(210 90% 60%)" },
   ];
@@ -84,9 +99,13 @@ export default function Profile() {
           <div className="relative flex items-center gap-4 mb-6">
             {/* Avatar */}
             <div className="relative">
-              <div className="w-20 h-20 bg-primary rounded-2xl flex items-center justify-center"
+              <div className="w-20 h-20 bg-primary rounded-2xl flex items-center justify-center overflow-hidden"
                 style={{ boxShadow: "0 6px 16px hsl(265 75% 60% / 0.25)" }}>
-                <Shield className="w-10 h-10 text-primary-foreground" strokeWidth={2.5} />
+                {userData?.avatar ? (
+                  <img src={userData.avatar} alt="Profile" className="w-full h-full object-cover" />
+                ) : (
+                  <Shield className="w-10 h-10 text-primary-foreground" strokeWidth={2.5} />
+                )}
               </div>
               {/* Level badge */}
               <div className="absolute -bottom-1.5 -right-1.5 w-7 h-7 bg-accent rounded-lg flex items-center justify-center border-2 border-card"
@@ -96,7 +115,9 @@ export default function Profile() {
             </div>
 
             <div className="flex-1">
-              <h2 className="text-xl font-extrabold text-foreground mb-1">SafetyHero</h2>
+              <h2 className="text-xl font-extrabold text-foreground mb-1">
+                {userData?.name || "SafetyHero"}
+              </h2>
               <p className="text-sm text-muted-foreground font-semibold">Level {level} Guardian</p>
             </div>
           </div>
@@ -189,7 +210,9 @@ export default function Profile() {
 
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-extrabold text-foreground truncate">{guardian.name}</p>
-                    <p className="text-xs text-muted-foreground font-semibold">{guardian.role}</p>
+                    <p className="text-xs text-muted-foreground font-semibold">
+                      {guardian.role} {guardian.phone && `• ${guardian.phone}`}
+                    </p>
                   </div>
 
                   <div className="w-8 h-8 bg-success/10 rounded-lg flex items-center justify-center">
