@@ -7,6 +7,7 @@ import { ArrowLeft, Loader2, Check } from "lucide-react";
 import Lottie from "lottie-react";
 import { hapticLight, hapticMedium, hapticError } from "@/lib/haptics";
 import celebrationAnimation from "../../public/animations/Celebration balloon confetti animation.json";
+import logoAnimation from "../../public/animations/logo animation.json";
 import { useNavigate } from "react-router-dom";
 import { CircularReveal } from "@/components/CircularReveal";
 import Index from "./Index";
@@ -123,7 +124,9 @@ export default function Onboarding() {
         animate={{ opacity: 1, y: 0 }}
         className="w-full flex justify-center mb-8"
       >
-          <img src="/illustrations/nest2.png" alt="Name" className="w-32 opacity-100" />
+          <div className="w-72 h-40">
+            <Lottie animationData={logoAnimation} loop={false} />
+          </div>
       </motion.div>
 
       <motion.h1
