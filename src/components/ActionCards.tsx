@@ -239,8 +239,8 @@ export function ActionCardList() {
         </div>
       </div>
       
-      {/* Roadmap */}
-      <div className="relative py-4">
+      {/* Roadmap - Fixed height to prevent navbar jumping */}
+      <div className="relative py-4" style={{ minHeight: '600px' }}>
         {lessons.map((lesson, index) => (
           <div key={lesson.id} className="pop-in" style={{ animationDelay: `${index * 100}ms` }}>
             <LessonCircle
