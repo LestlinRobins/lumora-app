@@ -3,7 +3,7 @@ import { Header } from "@/components/Header";
 import { BottomNav, TabId } from "@/components/BottomNav";
 import { ActionCardList } from "@/components/ActionCards";
 import { DailyChallenge, RewardBadge } from "@/components/DailyChallenge";
-import { BookOpen, Dumbbell, Heart } from "lucide-react";
+import { BookOpen, Dumbbell, Heart, Lightbulb } from "lucide-react";
 
 function HomeContent() {
   return (
@@ -23,14 +23,20 @@ function HomeContent() {
       {/* Reward encouragement */}
       <RewardBadge />
       
-      {/* Quick tip */}
-      <div className="mx-5 mt-6 p-4 bg-secondary/10 rounded-2xl border border-secondary/20">
-        <div className="flex items-start gap-3">
-          <span className="text-2xl">💡</span>
-          <div>
-            <p className="text-sm font-bold text-foreground">Quick Tip</p>
-            <p className="text-xs text-muted-foreground mt-1">
-              A trusted adult is someone who makes you feel safe and listens to you.
+      {/* Safety tip card - Drug awareness education */}
+      <div className="mx-5 mt-6 p-5 bg-secondary/12 rounded-[1.75rem] border-2 border-secondary/30 slide-up relative overflow-hidden">
+        {/* Decorative background */}
+        <div className="absolute top-0 right-0 w-24 h-24 bg-accent/15 rounded-full blur-2xl" />
+        
+        <div className="relative flex items-start gap-4">
+          <div className="w-12 h-12 bg-secondary rounded-2xl flex items-center justify-center flex-shrink-0"
+            style={{ boxShadow: 'var(--shadow-button-secondary)' }}>
+            <Lightbulb className="w-6 h-6 text-secondary-foreground" strokeWidth={2.5} />
+          </div>
+          <div className="flex-1">
+            <p className="text-base font-extrabold text-foreground">Safety Tip 💡</p>
+            <p className="text-sm text-muted-foreground font-semibold mt-1.5 leading-relaxed">
+              A trusted adult is someone who makes you feel safe, listens to you, and helps you make good choices. They could be a parent, teacher, or family member!
             </p>
           </div>
         </div>
@@ -42,13 +48,18 @@ function HomeContent() {
 function PlaceholderContent({ title, icon: Icon }: { title: string; icon: React.ElementType }) {
   return (
     <main className="pb-28 pt-6 px-5 flex flex-col items-center justify-center min-h-[60vh]">
-      <div className="w-20 h-20 bg-primary/10 rounded-3xl flex items-center justify-center mb-4">
-        <Icon className="w-10 h-10 text-primary" />
+      <div className="w-24 h-24 bg-primary rounded-[2rem] flex items-center justify-center mb-6 bounce-in"
+        style={{ boxShadow: 'var(--shadow-button-primary)' }}>
+        <Icon className="w-12 h-12 text-primary-foreground" strokeWidth={2.5} />
       </div>
-      <h2 className="text-xl font-bold text-foreground">{title}</h2>
-      <p className="text-sm text-muted-foreground mt-2 text-center">
-        More activities coming soon! 🎉
+      <h2 className="text-2xl font-extrabold text-foreground">{title}</h2>
+      <p className="text-base text-muted-foreground font-semibold mt-3 text-center max-w-xs">
+        More fun activities coming soon! 🎉
       </p>
+      <div className="mt-6 px-6 py-3 bg-primary rounded-full text-white font-bold text-sm"
+        style={{ boxShadow: 'var(--shadow-button-primary)' }}>
+        Stay tuned!
+      </div>
     </main>
   );
 }
