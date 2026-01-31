@@ -1,7 +1,7 @@
-import { Home, BookOpen, Dumbbell, Heart } from "lucide-react";
+import { Home, MessageCircle, Carrot, Users } from "lucide-react";
 import { useState } from "react";
 
-type TabId = "home" | "learn" | "practice" | "support";
+export type TabId = "nest" | "chatbot" | "tips" | "profile";
 
 interface NavItem {
   id: TabId;
@@ -10,10 +10,10 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { id: "home", label: "Home", icon: Home },
-  { id: "learn", label: "Learn", icon: BookOpen },
-  { id: "practice", label: "Practice", icon: Dumbbell },
-  { id: "support", label: "Support", icon: Heart },
+  { id: "nest", label: "Nest", icon: Home },
+  { id: "chatbot", label: "Chat", icon: MessageCircle },
+  { id: "tips", label: "Tips", icon: Carrot },
+  { id: "profile", label: "Us", icon: Users },
 ];
 
 interface BottomNavProps {
@@ -23,8 +23,21 @@ interface BottomNavProps {
 
 export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-card border-t-2 border-border px-4 pb-6 pt-3 safe-area-bottom backdrop-blur-lg bg-card/95"
-      style={{ boxShadow: '0 -4px 20px rgba(0, 0, 0, 0.08)' }}>
+    <nav 
+      className="fixed bottom-0 left-0 right-0 bg-card border-t-2 border-border px-4 pb-6 pt-3 safe-area-bottom backdrop-blur-lg bg-card/95"
+      style={{ 
+        boxShadow: '0 -4px 20px rgba(0, 0, 0, 0.08)',
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        zIndex: 1000,
+        transform: 'translateZ(0)',
+        willChange: 'transform',
+        backfaceVisibility: 'hidden',
+        WebkitBackfaceVisibility: 'hidden'
+      }}
+    >
       <div className="flex justify-around items-center max-w-md mx-auto">
         {navItems.map((item) => {
           const Icon = item.icon;
@@ -66,5 +79,3 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
     </nav>
   );
 }
-
-export type { TabId };

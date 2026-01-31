@@ -1,93 +1,89 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { BottomNav, TabId } from "@/components/BottomNav";
 import { ActionCardList } from "@/components/ActionCards";
-import { DailyChallenge, RewardBadge } from "@/components/DailyChallenge";
-import { BookOpen, Dumbbell, Heart, Lightbulb } from "lucide-react";
+import { BalloonView } from "@/components/BalloonView";
+import { RewardBadge } from "@/components/DailyChallenge";
+import { MessageCircle } from "lucide-react";
 
-function HomeContent() {
+function NestContent() {
   return (
-    <main className="pb-28 pt-2">
+    <main className="pb-28 pt-0">
       <Header />
       
-      {/* Daily challenge section */}
-      <div className="mt-4">
-        <DailyChallenge />
+      {/* Balloon interaction for home */}
+      <div className="mt-6">
+        <BalloonView />
       </div>
+    </main>
+  );
+}
+
+function ChatbotContent() {
+  return (
+    <main className="pb-28 pt-0">
+      <Header />
+      <div className="px-5 flex flex-col items-center justify-center min-h-[60vh] mt-12">
+        <div className="w-24 h-24 bg-primary rounded-full flex items-center justify-center mb-6 bounce-in"
+          style={{ boxShadow: 'var(--shadow-button-primary)' }}>
+          <MessageCircle className="w-12 h-12 text-primary-foreground" strokeWidth={2.5} />
+        </div>
+        <h2 className="text-2xl font-extrabold text-foreground">Chat Helper</h2>
+        <p className="text-base text-muted-foreground font-semibold mt-3 text-center max-w-xs">
+          Coming soon! A friendly helper to talk to 💬
+        </p>
+      </div>
+    </main>
+  );
+}
+
+function SafeTipsContent() {
+  return (
+    <main className="pb-28 pt-0">
+      <Header />
       
-      {/* Main action cards */}
+      {/* Safe tips roadmap (copy of main roadmap) */}
       <div className="mt-6">
         <ActionCardList />
       </div>
       
       {/* Reward encouragement */}
       <RewardBadge />
-      
-      {/* Safety tip card - Drug awareness education */}
-      <div className="mx-5 mt-6 p-5 bg-secondary/12 rounded-[1.75rem] border-2 border-secondary/30 slide-up relative overflow-hidden">
-        {/* Decorative background */}
-        <div className="absolute top-0 right-0 w-24 h-24 bg-accent/15 rounded-full blur-2xl" />
-        
-        <div className="relative flex items-start gap-4">
-          <div className="w-12 h-12 bg-secondary rounded-2xl flex items-center justify-center flex-shrink-0"
-            style={{ boxShadow: 'var(--shadow-button-secondary)' }}>
-            <Lightbulb className="w-6 h-6 text-secondary-foreground" strokeWidth={2.5} />
-          </div>
-          <div className="flex-1">
-            <p className="text-base font-extrabold text-foreground">Safety Tip 💡</p>
-            <p className="text-sm text-muted-foreground font-semibold mt-1.5 leading-relaxed">
-              A trusted adult is someone who makes you feel safe, listens to you, and helps you make good choices. They could be a parent, teacher, or family member!
-            </p>
-          </div>
-        </div>
-      </div>
     </main>
   );
 }
 
-function PlaceholderContent({ title, icon: Icon }: { title: string; icon: React.ElementType }) {
-  return (
-    <main className="pb-28 pt-6 px-5 flex flex-col items-center justify-center min-h-[60vh]">
-      <div className="w-24 h-24 bg-primary rounded-[2rem] flex items-center justify-center mb-6 bounce-in"
-        style={{ boxShadow: 'var(--shadow-button-primary)' }}>
-        <Icon className="w-12 h-12 text-primary-foreground" strokeWidth={2.5} />
-      </div>
-      <h2 className="text-2xl font-extrabold text-foreground">{title}</h2>
-      <p className="text-base text-muted-foreground font-semibold mt-3 text-center max-w-xs">
-        More fun activities coming soon! 🎉
-      </p>
-      <div className="mt-6 px-6 py-3 bg-primary rounded-full text-white font-bold text-sm"
-        style={{ boxShadow: 'var(--shadow-button-primary)' }}>
-        Stay tuned!
-      </div>
-    </main>
-  );
-}
 
-const Index = () => {
-  const [activeTab, setActiveTab] = useState<TabId>("home");
+export default function Index() {
+  const [activeTab, setActiveTab] = useState<TabId>("nest");
+  const navigate = useNavigate();
+
+  const handleTabChange = (tab: TabId) => {
+    if (tab === "profile") {
+      navigate("/profile");
+    } else {
+      setActiveTab(tab);
+    }
+  };
 
   const renderContent = () => {
     switch (activeTab) {
-      case "home":
-        return <HomeContent />;
-      case "learn":
-        return <PlaceholderContent title="Learn" icon={BookOpen} />;
-      case "practice":
-        return <PlaceholderContent title="Practice" icon={Dumbbell} />;
-      case "support":
-        return <PlaceholderContent title="Support" icon={Heart} />;
+      case "nest":
+        return <NestContent />;
+      case "chatbot":
+        return <ChatbotContent />;
+      case "tips":
+        return <SafeTipsContent />;
       default:
-        return <HomeContent />;
+        return <NestContent />;
     }
   };
 
   return (
-    <div className="min-h-screen bg-background max-w-md mx-auto relative">
+    <div className="min-h-screen bg-background" style={{ overflowX: 'hidden' }}>
       {renderContent()}
-      <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
+      <BottomNav activeTab={activeTab} onTabChange={handleTabChange} />
     </div>
   );
-};
-
-export default Index;
+}
