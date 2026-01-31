@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowLeft, Loader2, Check } from "lucide-react";
 import Lottie from "lottie-react";
+import { hapticLight, hapticMedium, hapticError } from "@/lib/haptics";
 import celebrationAnimation from "../../public/animations/Celebration balloon confetti animation.json";
 import { useNavigate } from "react-router-dom";
 
@@ -82,16 +83,15 @@ export default function Onboarding() {
 
   const handleNext = () => {
     if (validateStep(step)) {
-    //   hapticLight(); // Assuming haptics not available in this context yet, can add if needed
-      if (navigator.vibrate) navigator.vibrate(10);
+      hapticLight();
       setStep(step + 1);
     } else {
-        if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
+        hapticError();
     }
   };
 
   const handleBack = () => {
-    if (navigator.vibrate) navigator.vibrate(10);
+    hapticLight();
     setStep(step - 1);
   };
 
@@ -99,7 +99,7 @@ export default function Onboarding() {
     if (!validateStep(step)) return;
 
     setIsSubmitting(true);
-    if (navigator.vibrate) navigator.vibrate(20);
+    hapticMedium();
 
     // Simulate API call
     setTimeout(() => {
@@ -230,7 +230,7 @@ export default function Onboarding() {
                 onClick={() => {
                     setFormData({ ...formData, avatar });
                     setErrors({ ...errors, avatar: "" });
-                    if (navigator.vibrate) navigator.vibrate(5);
+                    hapticLight();
                 }}
                 className={`relative bg-white rounded-2xl p-4 border-2 cursor-pointer transition-all duration-200 flex flex-col items-center justify-center aspect-square ${
                     formData.avatar === avatar 

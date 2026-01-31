@@ -37,9 +37,18 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  ({ className, variant, size, asChild = false, onClick, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
-    return <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />;
+    
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      // Import dynamically to avoid circular dependencies if any, but regular import is fine here.
+      // We'll use a direct invocation since it's a UI component.
+      // Ideally we should import hapticLight at the top.
+      if (navigator.vibrate) navigator.vibrate(10); 
+      onClick?.(e);
+    };
+
+    return <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} onClick={handleClick} {...props} />;
   },
 );
 Button.displayName = "Button";
