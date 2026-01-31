@@ -8,12 +8,15 @@ import Lottie from "lottie-react";
 import { hapticLight, hapticMedium, hapticError } from "@/lib/haptics";
 import celebrationAnimation from "../../public/animations/Celebration balloon confetti animation.json";
 import { useNavigate } from "react-router-dom";
+import { CircularReveal } from "@/components/CircularReveal";
+import Index from "./Index";
 
 export default function Onboarding() {
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
+  const [isRevealing, setIsRevealing] = useState(false);
   
   // Load initial state from localStorage if available
   const [formData, setFormData] = useState(() => {
@@ -422,7 +425,8 @@ export default function Onboarding() {
         <Button
             onClick={() => {
                 setIsExiting(true);
-                setTimeout(() => navigate("/profile"), 500);
+                // Trigger reveal animation
+                setIsRevealing(true);
             }}
             className="w-full h-14 rounded-full text-xl font-bold shadow-lg hover:shadow-2xl transition-all btn-bouncy bg-gradient-to-r from-primary to-purple-600 text-white"
         >
@@ -431,6 +435,8 @@ export default function Onboarding() {
       </motion.div>
     </div>
   ];
+
+
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center relative overflow-hidden font-sans">
@@ -452,6 +458,13 @@ export default function Onboarding() {
                 </motion.div>
             )}
         </AnimatePresence>
+
+        <CircularReveal
+          isRevealing={isRevealing}
+          onRevealComplete={() => navigate("/")}
+        >
+          <Index />
+        </CircularReveal>
     </div>
   );
 }
