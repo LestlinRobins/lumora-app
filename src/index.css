@@ -1,5 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -79,8 +78,8 @@
 
     --sidebar: 0 0% 100%;
 
-    /* Font - Rounded, friendly Fredoka & Nunito */
-    --font-sans: 'Fredoka', 'Nunito', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    /* Font */
+    --font-sans: 'DM Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 
     /* Playful shadows with color tints - ENHANCED */
     --shadow-card: 0 6px 0 0 hsl(250 30% 85%);

@@ -72,7 +72,7 @@ export default {
       },
       fontFamily: {
         sans: [
-          "Nunito",
+          "DM Sans",
           "ui-sans-serif",
           "system-ui",
           "-apple-system",

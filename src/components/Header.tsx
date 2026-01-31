@@ -1,4 +1,6 @@
+import { useEffect, useMemo, useState } from "react";
 import { User } from "lucide-react";
+import { getCarrots, onCarrotsChanged } from "@/lib/carrots";
 
 interface HeaderProps {
   title?: string;
@@ -7,8 +9,19 @@ interface HeaderProps {
 
 export function Header({ 
   title = "Lumora", 
-  coins = 50 
+  coins
 }: HeaderProps) {
+  const [carrots, setCarrots] = useState<number>(() => getCarrots());
+
+  useEffect(() => {
+    setCarrots(getCarrots());
+    return onCarrotsChanged(setCarrots);
+  }, []);
+
+  const displayCoins = useMemo(() => {
+    return typeof coins === "number" ? coins : carrots;
+  }, [coins, carrots]);
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 pt-4 pb-3 px-5 bg-card border-b-2 border-border">
       <div className="flex items-center justify-between">
@@ -19,13 +32,13 @@ export function Header({
         
         {/* Right side: Coins + Profile */}
         <div className="flex items-center gap-3">
-          {/* Gold coins */}
-          <div className="flex items-center gap-2 bg-accent/20 px-3 py-1.5 rounded-full border-2 border-accent/40">
-            <div className="w-6 h-6 bg-accent rounded-full flex items-center justify-center text-xs font-black"
-              style={{ boxShadow: 'var(--shadow-button-accent)' }}>
-              🪙
-            </div>
-            <span className="text-sm font-extrabold text-foreground">{coins}</span>
+          {/* Carrots */}
+          <div 
+            data-carrot-target
+            className="flex items-center gap-2 bg-accent/20 px-3 py-1.5 rounded-full border-2 border-accent/40"
+          >
+            <span className="text-base">🥕</span>
+            <span className="text-sm font-extrabold text-foreground">{displayCoins}</span>
           </div>
           
           {/* Profile icon */}

@@ -130,6 +130,24 @@ export function ActionCardList() {
   const [celebrationData, setCelebrationData] = useState<any>(null);
   const [celebrationText, setCelebrationText] = useState("");
 
+  // Haptics (same idea as Quiz)
+  const buildingPattern = () => {
+    if (navigator.vibrate) {
+      const pattern = [
+        25, 250, 30, 220, 35, 200, 40, 180, 45, 160, 50, 140, 55, 120, 60, 100,
+        65, 90, 70, 80, 75, 70, 300, 120,
+      ];
+      navigator.vibrate(pattern);
+    }
+  };
+
+  // Two medium-length pulses for "wrong" (requested)
+  const wrongPattern = () => {
+    if (navigator.vibrate) {
+      navigator.vibrate([160, 90, 160]);
+    }
+  };
+
   const animationFiles = [
     "Celebration balloon confetti animation.json", 
     "Champion.json", 
@@ -266,12 +284,14 @@ export function ActionCardList() {
   ];
 
   const handleTipClick = (id: number) => {
+    if (navigator.vibrate) navigator.vibrate(20);
     setActiveTipId(id);
     setIsClosing(false);
     setShowCelebration(false);
   };
 
   const handleGotIt = async () => {
+    buildingPattern();
     // Select random animation and text
     const randomAnim = animationFiles[Math.floor(Math.random() * animationFiles.length)];
     const randomText = phrases[Math.floor(Math.random() * phrases.length)];
@@ -310,6 +330,11 @@ export function ActionCardList() {
   };
 
   const handleClose = (markCompleted = false) => {
+    if (markCompleted) {
+      buildingPattern();
+    } else {
+      wrongPattern();
+    }
     setIsClosing(true);
     setTimeout(() => {
       if (markCompleted && activeTipId !== null && !completedTips.includes(activeTipId)) {

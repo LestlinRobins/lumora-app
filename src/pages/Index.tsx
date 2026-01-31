@@ -7,6 +7,7 @@ import { BalloonView } from "@/components/BalloonView";
 import { RewardBadge } from "@/components/DailyChallenge";
 import { SafeTipsContent } from "@/components/SafeTipsContent";
 import { MessageCircle } from "lucide-react";
+import { FlyingCarrotsOverlay, getPendingCarrotReward, clearPendingCarrotReward, triggerCarrotAnimation } from "@/components/FlyingCarrots";
 
 function NestContent() {
   return (
@@ -53,6 +54,35 @@ export default function Index() {
     }
   }, [location]);
 
+  // Check for pending carrot reward and trigger animation
+  useEffect(() => {
+    const reward = getPendingCarrotReward();
+    if (reward) {
+      // Small delay to ensure page is rendered and balloon is visible
+      const timer = setTimeout(() => {
+        // Find the balloon element
+        const balloonEl = document.querySelector(`[data-balloon-id="${reward.balloonId}"]`);
+        if (balloonEl) {
+          const rect = balloonEl.getBoundingClientRect();
+          triggerCarrotAnimation(
+            rect.left + rect.width / 2,
+            rect.top + rect.height / 2,
+            reward.amount
+          );
+        } else {
+          // Fallback: animate from center of screen
+          triggerCarrotAnimation(
+            window.innerWidth / 2,
+            window.innerHeight / 2,
+            reward.amount
+          );
+        }
+        clearPendingCarrotReward();
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [location]);
+
   const handleTabChange = (tab: TabId) => {
     if (tab === "profile") {
       navigate("/profile");
@@ -80,6 +110,7 @@ export default function Index() {
     <div className="min-h-screen bg-background" style={{ overflowX: 'hidden' }}>
       {renderContent()}
       <BottomNav activeTab={activeTab} onTabChange={handleTabChange} />
+      <FlyingCarrotsOverlay />
     </div>
   );
 }

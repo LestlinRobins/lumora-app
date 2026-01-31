@@ -24,6 +24,7 @@ interface BalloonProps extends LessonBalloon {
 }
 
 function Balloon({ 
+  id,
   title, 
   icon: Icon, 
   color, 
@@ -40,6 +41,7 @@ function Balloon({
   return (
     <div 
       className={`absolute ${className || ''}`}
+      data-balloon-id={id}
       style={{ 
         bottom: bottomPosition,
         left: leftPosition,

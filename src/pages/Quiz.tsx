@@ -10,6 +10,8 @@ import championAnimation from "@/animations/Champion.json";
 import celebrationAnimation from "@/animations/Celebration balloon confetti animation.json";
 import sadStarAnimation from "@/animations/Sad Star.json";
 import cryingEmojiAnimation from "@/animations/Crying emoji.json";
+import { addCarrots } from "@/lib/carrots";
+import { setPendingCarrotReward } from "@/components/FlyingCarrots";
 
 interface QuizQuestion {
   id: number;
@@ -124,6 +126,7 @@ export default function Quiz() {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
+  const [attempt, setAttempt] = useState(1);
 
   // Randomly select an animation for this quiz session
   const successAnimation = useMemo(() => {
@@ -155,6 +158,20 @@ export default function Quiz() {
     }
   };
 
+  // Two medium-length pulses for wrong answer (matches Tips)
+  const wrongPattern = () => {
+    if (navigator.vibrate) {
+      navigator.vibrate([160, 90, 160]);
+    }
+  };
+
+  const carrotsForAttempt = (tryNumber: number) => {
+    if (tryNumber <= 1) return 100;
+    if (tryNumber === 2) return 75;
+    if (tryNumber === 3) return 50;
+    return 25;
+  };
+
   const handleSubmit = () => {
     if (selectedOption === null) {
       toast.error("Please select an answer!");
@@ -164,14 +181,24 @@ export default function Quiz() {
     const correct = selectedOption === quiz.correctAnswer;
     setIsCorrect(correct);
     setShowResult(true);
-    buildingPattern(); // Trigger haptic feedback for both success and failure
+    if (correct) {
+      buildingPattern();
+    } else {
+      wrongPattern();
+    }
 
     if (correct) {
       // Save completion to localStorage
       const completedBalloons = JSON.parse(localStorage.getItem("completedBalloons") || "[]");
-      if (!completedBalloons.includes(balloonId)) {
+      const alreadyCompleted = completedBalloons.includes(balloonId);
+
+      if (!alreadyCompleted) {
         completedBalloons.push(balloonId);
         localStorage.setItem("completedBalloons", JSON.stringify(completedBalloons));
+
+        const earned = carrotsForAttempt(attempt);
+        // Store reward info for flying animation (carrots will be added after animation)
+        setPendingCarrotReward(earned, balloonId);
       }
       setTimeout(() => {
         navigate("/");
@@ -181,6 +208,7 @@ export default function Quiz() {
       setTimeout(() => {
         setShowResult(false);
         setSelectedOption(null);
+        setAttempt((prev) => Math.min(4, prev + 1));
       }, 2000);
     }
   };
@@ -189,6 +217,7 @@ export default function Quiz() {
     setSelectedOption(null);
     setShowResult(false);
     setIsCorrect(false);
+    setAttempt(1);
   };
 
   return (
