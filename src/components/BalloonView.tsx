@@ -43,20 +43,24 @@ function Balloon({
         transform: 'translateX(-50%)'
       }}
     >
-      {/* String connecting to bottom - Curly/Wavy */}
+      {/* String - Curly dangling "floating" string attached to knot */}
       <svg
-        className="absolute top-full left-1/2 -translate-x-1/2 overflow-visible"
-        width="40"
-        height={parseInt(bottomPosition) > 0 ? parseInt(bottomPosition) : 100}
+        className="absolute top-[90%] left-1/2 -translate-x-1/2 overflow-visible"
+        width="50"
+        height="80"
         style={{ pointerEvents: 'none' }}
       >
-        {/* Use deterministic values (id) instead of random to prevent jitter on re-render */}
         <path
-          d={`M 20 0 Q ${20 + ((parseInt(title.length.toString()) % 2 === 0) ? 15 : -15)} ${parseInt(bottomPosition) / 2} 20 ${bottomPosition}`}
+          d={
+            (title.length % 2 === 0)
+              ? "M 25 0 C 45 15, 5 30, 25 45 S 40 70, 25 80" 
+              : "M 25 0 C 5 15, 45 30, 25 45 S 10 70, 25 80"
+          }
           stroke="hsl(var(--muted-foreground))"
           strokeWidth="1.5"
           fill="none"
           strokeOpacity="0.4"
+          strokeLinecap="round"
         />
       </svg>
 
