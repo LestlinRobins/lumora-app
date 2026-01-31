@@ -43,7 +43,6 @@ export default function Onboarding() {
     "/illustrations/undraw_male-avatar_2.svg",
     "/illustrations/undraw_a-woman-avatar1.svg",
     "/illustrations/undraw_a-woman-avata2.svg",
-    "/illustrations/undraw_among-nature_2f9e.svg", 
   ];
 
   const validateStep = (currentStep: number): boolean => {
@@ -199,7 +198,7 @@ export default function Onboarding() {
       key="screen-1"
       className="max-w-md w-full flex flex-col items-center justify-center px-6"
     >
-        <div className="absolute top-6 left-6">
+      <div className="fixed top-2 left-4 z-50">
             <Button variant="ghost" size="icon" onClick={handleBack} className="rounded-full">
                 <ArrowLeft className="w-6 h-6 text-muted-foreground" />
             </Button>

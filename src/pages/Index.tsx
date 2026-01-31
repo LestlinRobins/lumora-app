@@ -5,7 +5,6 @@ import { BottomNav, TabId } from "@/components/BottomNav";
 import { ActionCardList } from "@/components/ActionCards";
 import { BalloonView } from "@/components/BalloonView";
 import { RewardBadge } from "@/components/DailyChallenge";
-import { SafeTipsContent } from "@/components/SafeTipsContent";
 import { MessageCircle } from "lucide-react";
 import { FlyingCarrotsOverlay, getPendingCarrotReward, clearPendingCarrotReward, triggerCarrotAnimation } from "@/components/FlyingCarrots";
 
@@ -54,12 +53,16 @@ export default function Index() {
 
   useEffect(() => {
     if (location.state && location.state.tab) {
+      if (location.state.tab === "tips") {
+        navigate("/tips");
+        return;
+      }
       setActiveTab(location.state.tab);
       // Optional: clear state to prevent stuck tab on refresh if desired, 
       // but keeping it is usually fine.
       // navigate(location.pathname, { replace: true, state: {} }); 
     }
-  }, [location]);
+  }, [location, navigate]);
 
   // Check for pending carrot reward and trigger animation
   useEffect(() => {
@@ -95,6 +98,8 @@ export default function Index() {
       navigate("/profile");
     } else if (tab === "chatbot") {
       navigate("/chat");
+    } else if (tab === "tips") {
+      navigate("/tips");
     } else {
       setActiveTab(tab);
     }
@@ -106,8 +111,6 @@ export default function Index() {
         return <NestContent />;
       case "chatbot":
         return <ChatbotContent />;
-      case "tips":
-        return <SafeTipsContent />;
       default:
         return <NestContent />;
     }

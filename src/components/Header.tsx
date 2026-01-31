@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { User } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { getCarrots, onCarrotsChanged } from "@/lib/carrots";
 
 interface HeaderProps {
@@ -11,6 +11,7 @@ export function Header({
   title = "Lumora", 
   coins
 }: HeaderProps) {
+  const navigate = useNavigate();
   const [carrots, setCarrots] = useState<number>(() => getCarrots());
 
   useEffect(() => {
@@ -25,26 +26,26 @@ export function Header({
   return (
     <header className="fixed top-0 left-0 right-0 z-50 pt-4 pb-3 px-5 bg-card border-b-2 border-border">
       <div className="flex items-center justify-between">
-        {/* App name on the left */}
-        <h1 className="text-xl font-extrabold text-primary tracking-tight">
-          Nest
-        </h1>
+        {/* App name with logo on the left */}
+        <div className="flex items-center gap-2">
+          <img src="/nest.jpeg" alt="Nest" className="w-8 h-8 rounded-full object-cover" />
+          <h1 className="text-xl font-extrabold text-primary tracking-tight">
+            Nest
+          </h1>
+        </div>
         
-        {/* Right side: Coins + Profile */}
+        {/* Right side: Carrots (clickable) */}
         <div className="flex items-center gap-3">
-          {/* Carrots */}
-          <div 
+          <button
+            type="button"
             data-carrot-target
-            className="flex items-center gap-2 bg-accent/20 px-3 py-1.5 rounded-full border-2 border-accent/40"
+            onClick={() => navigate("/carrots")}
+            className="flex items-center gap-2 bg-accent/20 px-3 py-1.5 rounded-full border-2 border-accent/40 hover:bg-accent/25 transition-colors"
+            aria-label="Open carrots"
+            title="Carrots"
           >
             <span className="text-base">🥕</span>
             <span className="text-sm font-extrabold text-foreground">{displayCoins}</span>
-          </div>
-          
-          {/* Profile icon */}
-          <button className="w-9 h-9 bg-primary rounded-full flex items-center justify-center btn-bouncy"
-            style={{ boxShadow: 'var(--shadow-button-primary)' }}>
-            <User className="w-5 h-5 text-primary-foreground" strokeWidth={2.5} />
           </button>
         </div>
       </div>

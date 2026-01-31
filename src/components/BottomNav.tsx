@@ -24,7 +24,7 @@ interface BottomNavProps {
 export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
   return (
     <nav 
-      className="fixed bottom-0 left-0 right-0 bg-card border-t-2 border-border px-4 pb-6 pt-3 safe-area-bottom backdrop-blur-lg bg-card/95"
+      className="fixed bottom-0 left-0 right-0 bg-card border-t-2 border-border px-4 pb-4 pt-2 safe-area-bottom backdrop-blur-lg bg-card/95"
       style={{ 
         boxShadow: '0 -4px 20px rgba(0, 0, 0, 0.08)',
         position: 'fixed',
