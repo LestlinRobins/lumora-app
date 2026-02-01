@@ -112,7 +112,7 @@ function PathConnector({
   return (
     <div className="relative w-full h-16 overflow-visible">
       <svg className="absolute top-0 left-0 w-full h-full overflow-visible" viewBox="0 0 300 64" preserveAspectRatio="none">
-        <path d={path} fill="none" stroke="hsl(var(--border))" strokeWidth="3" strokeDasharray="6 4" strokeLinecap="round" opacity="0.6" />
+        <path d={path} fill="none" stroke="grey" strokeWidth="3" strokeDasharray="6 4" strokeLinecap="round" opacity="0.6" />
       </svg>
     </div>
   );
