@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getCarrots, onCarrotsChanged } from "@/lib/carrots";
+import { hapticLight } from "@/lib/haptics";
+
 
 interface HeaderProps {
   title?: string;
@@ -39,7 +41,10 @@ export function Header({
           <button
             type="button"
             data-carrot-target
-            onClick={() => navigate("/carrots")}
+            onClick={() => {
+              hapticLight();
+              navigate("/carrots");
+            }}
             className="flex items-center gap-2 bg-accent/20 px-3 py-1.5 rounded-full border-2 border-accent/40 hover:bg-accent/25 transition-colors"
             aria-label="Open carrots"
             title="Carrots"

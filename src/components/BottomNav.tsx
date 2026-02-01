@@ -1,5 +1,7 @@
 import { Home, MessageCircle, Carrot, Users } from "lucide-react";
 import { useState } from "react";
+import { hapticLight } from "@/lib/haptics";
+
 
 export type TabId = "nest" | "chatbot" | "tips" | "profile";
 
@@ -46,7 +48,10 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
           return (
             <button
               key={item.id}
-              onClick={() => onTabChange(item.id)}
+              onClick={() => {
+                hapticLight();
+                onTabChange(item.id);
+              }}
               className={`
                 nav-pill flex-1 max-w-20 relative
                 ${isActive 
